@@ -2,6 +2,8 @@ import Image from "next/image"
 
 import { DownloadButton } from "@/components/download-button"
 import { Bento } from "@/components/bento"
+import { Faq } from "@/components/faq"
+import { Footer } from "@/components/footer"
 import { Hero } from "@/components/hero"
 import { Pricing } from "@/components/pricing"
 import { Transform } from "@/components/transform"
@@ -26,6 +28,8 @@ export default function Home() {
       <Bento />
       <Transform />
       <Pricing />
+      <Faq />
+      <Footer />
     </main>
   )
 }
