@@ -3,6 +3,7 @@ import Image from "next/image"
 import { DownloadButton } from "@/components/download-button"
 import { Bento } from "@/components/bento"
 import { Hero } from "@/components/hero"
+import { Transform } from "@/components/transform"
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       </header>
       <Hero />
       <Bento />
+      <Transform />
     </main>
   )
 }

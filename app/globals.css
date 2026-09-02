@@ -95,6 +95,7 @@
   }
   html {
     @apply font-sans;
+    color-scheme: dark; /* native scrollbars and form controls in dark */
   }
 }
 

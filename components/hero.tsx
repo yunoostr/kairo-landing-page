@@ -9,19 +9,14 @@ import {
 import { DownloadButton } from "@/components/download-button"
 import { ShaderBackground } from "@/components/ui/shader-background"
 import { cn } from "@/lib/utils"
+import { wordEnds } from "@/lib/word-ends"
 
 const VERBS = ["Listen to", "Humanize", "Translate", "Summarize"]
 
 const SUBLINE =
   "Select a passage and Kairo reads it aloud, word by word. Understand it in your language, get the gist in seconds, or make it sound like you, without leaving the app you're in."
 const WORDS = SUBLINE.split(" ")
-// Word boundaries as fractions of the audio, weighted by word length.
-// ponytail: the TTS API returns no timestamps; length-weighting is close enough.
-const ENDS = (() => {
-  const total = WORDS.reduce((n, w) => n + w.length + 1, 0)
-  let acc = 0
-  return WORDS.map((w) => (acc += (w.length + 1) / total))
-})()
+const ENDS = wordEnds(WORDS)
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
