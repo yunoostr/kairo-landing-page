@@ -1,4 +1,8 @@
+import { Caveat } from "next/font/google"
+
 import "./globals.css"
+
+const hand = Caveat({ subsets: ["latin"], variable: "--font-hand" })
 
 export default function RootLayout({
   children,
@@ -6,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className="antialiased">
+    <html lang="en" className={`antialiased ${hand.variable}`}>
       <body>{children}</body>
     </html>
   )
