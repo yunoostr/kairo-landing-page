@@ -11,7 +11,13 @@ import { ShaderBackground } from "@/components/ui/shader-background"
 import { cn } from "@/lib/utils"
 import { wordEnds } from "@/lib/word-ends"
 
-const VERBS = ["Listen to", "Humanize", "Translate", "Summarize"]
+// Words marked with * keep their glow once read.
+const HEADLINE =
+  "Every text on your Mac, *read *aloud. Then *made *human, *translated, or *summarized."
+const HEAD_WORDS = HEADLINE.split(" ").map((w) => ({
+  text: w.replace(/^\*/, ""),
+  key: w.startsWith("*"),
+}))
 
 const SUBLINE =
   "Select a passage and Kairo reads it aloud, word by word. Understand it in your language, get the gist in seconds, or make it sound like you, without leaving the app you're in."
@@ -22,31 +28,22 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
 export function Hero() {
   const audio = useRef<HTMLAudioElement>(null)
-  const box = useRef<HTMLSpanElement>(null)
-  const items = useRef<(HTMLSpanElement | null)[]>([])
-  const [verb, setVerb] = useState(0)
+  const [read, setRead] = useState(-1) // headline words lit by the lamp so far
   const [selected, setSelected] = useState(0) // words swept by the fake cursor
   const [current, setCurrent] = useState(-1) // word being read
   const [playing, setPlaying] = useState(false)
 
-  // Rolling verb in the headline.
+  // The headline reads itself once, one word at a time.
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-    const id = setInterval(() => setVerb((v) => (v + 1) % VERBS.length), 2600)
-    return () => clearInterval(id)
-  }, [])
-
-  // The highlight box hugs the current verb; width animates via CSS.
-  useEffect(() => {
-    const fit = () => {
-      const w = items.current[verb]?.offsetWidth
-      if (box.current && w) box.current.style.width = `${w}px`
+    let id: ReturnType<typeof setTimeout>
+    const step = (i: number) => {
+      setRead(i)
+      if (i < HEAD_WORDS.length - 1) id = setTimeout(() => step(i + 1), 360)
     }
-    fit()
-    document.fonts?.ready.then(fit)
-    window.addEventListener("resize", fit)
-    return () => window.removeEventListener("resize", fit)
-  }, [verb])
+    id = setTimeout(() => step(0), 1600)
+    return () => clearTimeout(id)
+  }, [])
 
   // Lamp follows the audio.
   useEffect(() => {
@@ -94,35 +91,27 @@ export function Hero() {
       <ShaderBackground className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_30%,transparent_95%)]" />
       <audio ref={audio} src="/subline.mp3" preload="auto" />
 
-      <div className="mx-auto flex max-w-[1160px] flex-col items-center px-8 pt-30 pb-40 text-center">
-        <h1 className="text-5xl leading-[1.12] font-semibold tracking-[-0.03em] md:text-[64px]">
-          <span
-            aria-live="polite"
-            className="-mx-[0.04em] inline-grid rounded-[0.22em] bg-primary px-[0.14em] py-[0.02em] align-baseline leading-[1.05] text-background shadow-[inset_0_1px_0_rgba(255,255,255,.35)] [clip-path:inset(0_round_0.22em)]"
-          >
-            {VERBS.map((v, i) => (
+      <div className="mx-auto max-w-[1160px] px-8 pt-28 pb-42">
+        <h1 className="max-w-[19ch] text-5xl leading-[1.12] font-semibold tracking-[-0.03em] text-muted-foreground md:text-[60px]">
+          {HEAD_WORDS.map((w, i) => (
+            <span key={i}>
               <span
-                key={v}
-                ref={(el) => {
-                  items.current[i] = el
-                }}
-                aria-hidden={i !== verb}
-                style={{ transform: `translateY(${(i - verb) * 100}%)` }}
                 className={cn(
-                  "col-start-1 row-start-1 justify-self-center whitespace-nowrap transition-[transform,opacity] duration-500 ease-[cubic-bezier(.2,.7,.2,1)]",
-                  i === verb ? "opacity-100" : "opacity-0"
+                  "transition-[color,text-shadow] duration-700 motion-reduce:text-foreground",
+                  i <= read && "text-foreground",
+                  (i === read || (w.key && i <= read)) &&
+                    "[text-shadow:0_0_22px_rgba(197,197,197,.45)]",
+                  w.key &&
+                    "motion-reduce:[text-shadow:0_0_22px_rgba(197,197,197,.45)]"
                 )}
               >
-                {v}
-              </span>
-            ))}
-          </span>{" "}
-          <span className="whitespace-nowrap">any text</span>
-          <br />
-          on your Mac
+                {w.text}
+              </span>{" "}
+            </span>
+          ))}
         </h1>
 
-        <p className="mt-7 max-w-[60ch] text-lg leading-relaxed text-muted-foreground">
+        <p className="mt-7 max-w-[58ch] text-lg leading-relaxed text-muted-foreground">
           {WORDS.map((w, i) => (
             <span key={i}>
               <span
@@ -150,14 +139,14 @@ export function Hero() {
                 <IconPlayerPlayFilled className="ml-px size-2.5" />
               )}
             </button>
-            {/* hand-drawn "try it" pointing at the player */}
+            {/* hand-drawn "try it" under the player, arrow pointing up at it */}
             <span
               aria-hidden
-              className="pointer-events-none absolute top-2.5 left-[calc(100%+2px)] hidden w-max items-end -space-x-1 text-muted-foreground md:flex"
+              className="pointer-events-none absolute top-[calc(100%-2px)] left-[22px] hidden w-max items-end -space-x-1 text-muted-foreground md:flex"
             >
               <svg
-                width="44"
-                height="32"
+                width="40"
+                height="30"
                 viewBox="0 0 44 32"
                 fill="none"
                 stroke="currentColor"
@@ -175,7 +164,7 @@ export function Hero() {
           </span>
         </p>
 
-        <DownloadButton className="mt-9 h-11 px-5 text-[15px]" />
+        <DownloadButton className="mt-13 h-11 px-5 text-[15px]" />
       </div>
     </section>
   )

@@ -1,3 +1,4 @@
+import { Kbd } from "@/components/ui/kbd"
 import { cn } from "@/lib/utils"
 
 // ---------- tiny isometric line renderer: 3D points → SVG ----------
@@ -192,7 +193,7 @@ const FIGS = {
 const CELLS: {
   fig: keyof typeof FIGS
   span: string
-  label: string
+  label: React.ReactNode
   title: string
   text: string
 }[] = [
@@ -213,14 +214,22 @@ const CELLS: {
   {
     fig: "words",
     span: "md:col-span-4",
-    label: "Read - ⌥A",
+    label: (
+      <>
+        Read - <Kbd>⌥A</Kbd>
+      </>
+    ),
     title: "Word by word",
     text: "A transcript follows the voice and lights up each word as it's read. Pause, resume, 0.75× to 2×.",
   },
   {
     fig: "chain",
     span: "md:col-span-4",
-    label: "Transform - ⌥T",
+    label: (
+      <>
+        Transform - <Kbd>⌥T</Kbd>
+      </>
+    ),
     title: "Three actions, chained",
     text: "Humanize, Translate, Summarize. Chain them, step back to any stage, compare before and after, paste the result over the original.",
   },

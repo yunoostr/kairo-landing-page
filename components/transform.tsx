@@ -6,6 +6,8 @@ import {
   IconPlayerPlayFilled,
 } from "@tabler/icons-react"
 
+import { Kbd } from "@/components/ui/kbd"
+
 import {
   ACTIONS,
   RESULTS,
@@ -175,8 +177,12 @@ export function Transform() {
       <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
         Every AI answer, said the way a colleague would.{" "}
         <span className="text-muted-foreground">
-          Select it, press ⌥T, pick an action. The result streams in, then goes
-          back where the text came from.
+          Select it, press{" "}
+          <Kbd className="h-[1.55em] min-w-[1.3em] -translate-y-[0.08em] rounded-md px-[0.3em] align-middle text-[0.62em]">
+            ⌥T
+          </Kbd>
+          , pick an action. The result streams in, then goes back where the text
+          came from.
         </span>
       </p>
 
@@ -205,7 +211,7 @@ export function Transform() {
                 Reset
               </button>
             ) : (
-              <span className="normal-case">markdown · 1 code block</span>
+              <span className="normal-case">markdown - 1 code block</span>
             )}
           </div>
         </div>
