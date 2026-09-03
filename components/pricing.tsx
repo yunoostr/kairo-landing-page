@@ -1,6 +1,7 @@
 import { IconCheck, IconMinus } from "@tabler/icons-react"
 
 import { DownloadButton } from "@/components/download-button"
+import { Reveal } from "@/components/reveal"
 import { Kbd } from "@/components/ui/kbd"
 import { ShaderBackground } from "@/components/ui/shader-background"
 import { cn } from "@/lib/utils"
@@ -73,17 +74,19 @@ export function Pricing() {
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[170%] [mask-image:linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)]"
       />
       <div className="mx-auto max-w-[1160px] px-8 pt-8 pb-32">
-        <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-          Free to read. Pay once to make it yours.{" "}
-          <span className="text-muted-foreground">
-            Kairo Pro is a lifetime license. OpenAI bills you cents per use on
-            your own key, and Kairo never charges again.
-          </span>
-        </p>
+        <Reveal>
+          <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
+            Free to read. Pay once to make it yours.{" "}
+            <span className="text-muted-foreground">
+              Kairo Pro is a lifetime license. OpenAI bills you cents per use on
+              your own key, and Kairo never charges again.
+            </span>
+          </p>
+        </Reveal>
 
         <div className="mt-16 grid gap-px border border-border bg-border md:grid-cols-12">
           {/* Free */}
-          <div className="grid grid-rows-[auto_1fr_auto] gap-4.5 bg-background px-8 pt-7 pb-8 md:col-span-5">
+          <Reveal className="grid grid-rows-[auto_1fr_auto] gap-4.5 bg-background px-8 pt-7 pb-8 md:col-span-5">
             <div className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
               Free
             </div>
@@ -106,10 +109,13 @@ export function Pricing() {
             <div>
               <DownloadButton />
             </div>
-          </div>
+          </Reveal>
 
           {/* Pro */}
-          <div className="relative grid grid-rows-[auto_1fr_auto] gap-4.5 bg-card px-8 pt-7 pb-8 md:col-span-7">
+          <Reveal
+            delay={80}
+            className="relative grid grid-rows-[auto_1fr_auto] gap-4.5 bg-card px-8 pt-7 pb-8 md:col-span-7"
+          >
             <div className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
               Pro - lifetime
             </div>
@@ -160,7 +166,7 @@ export function Pricing() {
                 Get Pro
               </a>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/reveal"
 import { Kbd } from "@/components/ui/kbd"
 import { cn } from "@/lib/utils"
 
@@ -5,12 +6,24 @@ import { cn } from "@/lib/utils"
 type P3 = [number, number, number]
 const iso = ([x, y, z]: P3) => [(x - y) * 0.866, (x + y) * 0.5 - z] as const
 const stroke = { vectorEffect: "non-scaling-stroke" } as const
+const HI = "stroke-primary"
+const DASH = "stroke-white/15 [stroke-dasharray:3_3]"
 
 const Line = ({ a, b, className }: { a: P3; b: P3; className?: string }) => {
   const [x1, y1] = iso(a)
   const [x2, y2] = iso(b)
+  // Solid lines get a normalized length so CSS can draw them in (see globals.css).
+  const dash = className === DASH
   return (
-    <line x1={x1} y1={y1} x2={x2} y2={y2} className={className} {...stroke} />
+    <line
+      x1={x1}
+      y1={y1}
+      x2={x2}
+      y2={y2}
+      pathLength={dash ? undefined : 1}
+      className={cn(!dash && "draw", className)}
+      {...stroke}
+    />
   )
 }
 const Poly = ({ pts, className }: { pts: P3[]; className?: string }) => (
@@ -90,9 +103,6 @@ const Ring = ({
   />
 )
 
-const HI = "stroke-primary"
-const DASH = "stroke-white/15 [stroke-dasharray:3_3]"
-
 const FIGS = {
   everywhere: (
     <>
@@ -107,7 +117,9 @@ const FIGS = {
           h={3}
         />
       ))}
-      <Box x={-20} y={-10} z={96} w={56} d={18} h={8} className={HI} />
+      <g className="float">
+        <Box x={-20} y={-10} z={96} w={56} d={18} h={8} className={HI} />
+      </g>
       <Line a={[-20, -10, 96]} b={[-20, -10, 50]} className={DASH} />
       <Line a={[36, 8, 96]} b={[36, 8, 50]} className={DASH} />
     </>
@@ -115,16 +127,17 @@ const FIGS = {
   fast: (
     <>
       {[10, 22, 34, 18, 40, 26, 12, 30, 16, 24].map((h, i) => (
-        <Box
-          key={i}
-          x={i * 14 - 70}
-          y={-4}
-          z={0}
-          w={8}
-          d={8}
-          h={h}
-          className={i < 2 ? HI : undefined}
-        />
+        <g key={i} className="bar" style={{ "--k": i } as React.CSSProperties}>
+          <Box
+            x={i * 14 - 70}
+            y={-4}
+            z={0}
+            w={8}
+            d={8}
+            h={h}
+            className={i < 2 ? HI : undefined}
+          />
+        </g>
       ))}
     </>
   ),
@@ -145,7 +158,7 @@ const FIGS = {
           [3, -4, 3.5],
           [-21, -4, 3.5],
         ]}
-        className="fill-primary stroke-none"
+        className="mark fill-primary stroke-none"
       />
     </>
   ),
@@ -158,7 +171,7 @@ const FIGS = {
           [44, -16],
         ] as const
       ).map(([x, y], i) => (
-        <g key={i}>
+        <g key={i} className={i === 2 ? "last" : undefined}>
           <Box
             x={x}
             y={y}
@@ -180,13 +193,13 @@ const FIGS = {
     </>
   ),
   key: (
-    <>
+    <g className="key">
       <Box x={-70} y={-20} z={0} w={40} d={40} h={4} />
       <Ring cx={-50} cy={0} z={4} r={9} />
       <Box x={-30} y={-6} z={0} w={100} d={12} h={4} />
       <Box x={40} y={6} z={0} w={8} d={10} h={4} />
       <Box x={58} y={6} z={0} w={8} d={7} h={4} />
-    </>
+    </g>
   ),
 }
 
@@ -245,20 +258,23 @@ const CELLS: {
 export function Bento() {
   return (
     <section className="mx-auto max-w-[1160px] px-8 pt-24 pb-32">
-      <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-        Built for developers who read AI output all day.{" "}
-        <span className="text-muted-foreground">
-          Kairo lives in the menu bar, works in every app, and runs on the
-          OpenAI key you already pay for.
-        </span>
-      </p>
+      <Reveal>
+        <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
+          Built for developers who read AI output all day.{" "}
+          <span className="text-muted-foreground">
+            Kairo lives in the menu bar, works in every app, and runs on the
+            OpenAI key you already pay for.
+          </span>
+        </p>
+      </Reveal>
 
       <div className="mt-18 grid gap-px bg-border md:grid-cols-12">
-        {CELLS.map((c) => (
-          <div
+        {CELLS.map((c, i) => (
+          <Reveal
             key={c.fig}
+            delay={i * 80}
             className={cn(
-              "grid grid-rows-[auto_1fr_auto] gap-4.5 bg-background px-8 pt-7 pb-8",
+              "group grid grid-rows-[auto_1fr_auto] gap-4.5 bg-background px-8 pt-7 pb-8",
               c.span
             )}
           >
@@ -268,6 +284,7 @@ export function Bento() {
             <div className="grid min-h-[190px] place-items-center">
               <svg
                 viewBox="-150 -90 300 180"
+                data-fig={c.fig}
                 aria-hidden
                 fill="none"
                 stroke="rgba(255,255,255,.28)"
@@ -285,7 +302,7 @@ export function Bento() {
                 {c.text}
               </p>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

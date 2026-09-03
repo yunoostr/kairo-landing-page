@@ -1,5 +1,6 @@
 import { IconPlus } from "@tabler/icons-react"
 
+import { Reveal } from "@/components/reveal"
 import { Kbd } from "@/components/ui/kbd"
 
 type QA = { q: string; a: React.ReactNode }
@@ -67,17 +68,23 @@ const GROUPS: { title: string; items: QA[] }[] = [
 export function Faq() {
   return (
     <section id="faq" className="mx-auto max-w-[1160px] px-8 pt-8 pb-32">
-      <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-        Three things people check before buying.{" "}
-        <span className="text-muted-foreground">
-          What it costs to run, where your key goes, and what it takes to set
-          up.
-        </span>
-      </p>
+      <Reveal>
+        <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
+          Three things people check before buying.{" "}
+          <span className="text-muted-foreground">
+            What it costs to run, where your key goes, and what it takes to set
+            up.
+          </span>
+        </p>
+      </Reveal>
 
       <div className="mt-14 grid gap-px border border-border bg-border md:grid-cols-3">
-        {GROUPS.map((g) => (
-          <div key={g.title} className="bg-background px-8 pt-7 pb-2">
+        {GROUPS.map((g, i) => (
+          <Reveal
+            key={g.title}
+            delay={i * 80}
+            className="bg-background px-8 pt-7 pb-2"
+          >
             <div className="mb-5 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
               {g.title}
             </div>
@@ -95,7 +102,7 @@ export function Faq() {
                 </p>
               </details>
             ))}
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

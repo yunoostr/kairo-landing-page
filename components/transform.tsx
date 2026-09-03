@@ -6,6 +6,7 @@ import {
   IconPlayerPlayFilled,
 } from "@tabler/icons-react"
 
+import { Reveal } from "@/components/reveal"
 import { Kbd } from "@/components/ui/kbd"
 
 import {
@@ -174,21 +175,23 @@ export function Transform() {
     <section className="mx-auto max-w-[1160px] px-8 pt-8 pb-32">
       <audio ref={audio} src={`/transform-${action}.mp3`} preload="auto" />
 
-      <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-        Every AI answer, said the way a colleague would.{" "}
-        <span className="text-muted-foreground">
-          Select it, press{" "}
-          <Kbd className="h-[1.55em] min-w-[1.3em] -translate-y-[0.08em] rounded-md px-[0.3em] align-middle text-[0.62em]">
-            ⌥T
-          </Kbd>
-          , pick an action. The result streams in, then goes back where the text
-          came from.
-        </span>
-      </p>
+      <Reveal>
+        <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
+          Every AI answer, said the way a colleague would.{" "}
+          <span className="text-muted-foreground">
+            Select it, press{" "}
+            <Kbd className="h-[1.55em] min-w-[1.3em] -translate-y-[0.08em] rounded-md px-[0.3em] align-middle text-[0.62em]">
+              ⌥T
+            </Kbd>
+            , pick an action. The result streams in, then goes back where the
+            text came from.
+          </span>
+        </p>
+      </Reveal>
 
       <div className="mt-16 grid gap-px border border-border bg-border md:h-[560px] md:grid-cols-2">
         {/* Before */}
-        <div className="grid h-[440px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-background px-7 pt-6 pb-7 md:h-auto">
+        <Reveal className="grid h-[440px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-background px-7 pt-6 pb-7 md:h-auto">
           <div className="flex min-h-9 items-center justify-between">
             <div className="flex items-center gap-2.5 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
               <span className="size-2 rounded-full bg-secondary" />
@@ -214,22 +217,33 @@ export function Transform() {
               <span className="normal-case">markdown - 1 code block</span>
             )}
           </div>
-        </div>
+        </Reveal>
 
         {/* After */}
-        <div className="grid h-[480px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-card px-7 pt-6 pb-7 md:h-auto">
+        <Reveal
+          delay={80}
+          className="grid h-[480px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-card px-7 pt-6 pb-7 md:h-auto"
+        >
           <div className="flex items-center justify-between gap-4">
             <div
               role="tablist"
-              className="inline-flex items-center gap-0.5 rounded-full bg-background p-1 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_0_1px_rgba(255,255,255,.06)]"
+              className="relative inline-grid grid-cols-3 rounded-full bg-background p-1 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_0_1px_rgba(255,255,255,.06)]"
             >
+              {/* The active pill slides between equal-width tabs. */}
+              <span
+                aria-hidden
+                className="absolute inset-y-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-full bg-secondary transition-transform duration-300 ease-out motion-reduce:transition-none"
+                style={{
+                  transform: `translateX(${ACTIONS.findIndex((a) => a.key === action) * 100}%)`,
+                }}
+              />
               {ACTIONS.map((a) => (
                 <button
                   key={a.key}
                   role="tab"
                   aria-selected={a.key === action}
                   onClick={() => pick(a.key)}
-                  className="rounded-full px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground aria-selected:bg-secondary aria-selected:text-foreground"
+                  className="relative rounded-full px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground aria-selected:text-foreground"
                 >
                   {a.name}
                 </button>
@@ -289,7 +303,7 @@ export function Transform() {
               After
             </span>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

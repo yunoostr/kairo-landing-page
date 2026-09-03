@@ -1,10 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import {
-  IconPlayerPauseFilled,
-  IconPlayerPlayFilled,
-} from "@tabler/icons-react"
+import { IconPlayerPlayFilled } from "@tabler/icons-react"
 
 import { DownloadButton } from "@/components/download-button"
 import { ShaderBackground } from "@/components/ui/shader-background"
@@ -39,9 +36,9 @@ export function Hero() {
     let id: ReturnType<typeof setTimeout>
     const step = (i: number) => {
       setRead(i)
-      if (i < HEAD_WORDS.length - 1) id = setTimeout(() => step(i + 1), 360)
+      if (i < HEAD_WORDS.length - 1) id = setTimeout(() => step(i + 1), 180)
     }
-    id = setTimeout(() => step(0), 1600)
+    id = setTimeout(() => step(0), 600)
     return () => clearTimeout(id)
   }, [])
 
@@ -97,7 +94,7 @@ export function Hero() {
             <span key={i}>
               <span
                 className={cn(
-                  "transition-[color,text-shadow] duration-700 motion-reduce:text-foreground",
+                  "transition-[color,text-shadow] duration-400 motion-reduce:text-foreground",
                   i <= read && "text-foreground",
                   (i === read || (w.key && i <= read)) &&
                     "[text-shadow:0_0_22px_rgba(197,197,197,.45)]",
@@ -134,7 +131,16 @@ export function Hero() {
               className="ml-1 inline-grid size-6 -translate-y-px place-items-center rounded-full bg-primary align-middle text-primary-foreground transition-transform hover:scale-105 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none active:scale-95"
             >
               {playing ? (
-                <IconPlayerPauseFilled className="size-2.5" />
+                // Bars bounce while the audio plays; the click still pauses.
+                <span aria-hidden className="flex h-2.5 items-end gap-px">
+                  {[0, 1, 2].map((i) => (
+                    <i
+                      key={i}
+                      className="block h-[7px] w-[2px] rounded-[1px] bg-current motion-safe:animate-[eq_.5s_ease-in-out_infinite_alternate]"
+                      style={{ animationDelay: `${i * -170}ms` }}
+                    />
+                  ))}
+                </span>
               ) : (
                 <IconPlayerPlayFilled className="ml-px size-2.5" />
               )}
