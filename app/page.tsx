@@ -20,6 +20,22 @@ export default function Home() {
     <main className="overflow-clip">
       <div className="relative overflow-hidden">
         <ShaderBackground className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_30%,transparent_95%)]" />
+        {/* Launch offer strip. Delete once the first 50 Pro licenses are sold. */}
+        <div className="relative z-10 flex min-h-9 items-center justify-center gap-3.5 border-b border-border bg-card/70 px-4 py-1.5 text-center text-[13px] leading-snug text-muted-foreground backdrop-blur-sm">
+          <span>
+            <b className="font-medium text-foreground">Launch price.</b>{" "}
+            <span className="hidden sm:inline">
+              Kairo Pro is 19 € instead of 29 € for the first 50 customers.
+            </span>
+            <span className="sm:hidden">Pro at 19 € for the first 50.</span>
+          </span>
+          <a
+            href="#pricing"
+            className="font-medium whitespace-nowrap text-primary transition-colors hover:text-foreground hover:underline hover:underline-offset-3"
+          >
+            Get Pro →
+          </a>
+        </div>
         <header className="relative z-10 mx-auto flex h-16 max-w-[1160px] items-center justify-between px-8">
           <a href="#" aria-label="Kairo">
             <Image

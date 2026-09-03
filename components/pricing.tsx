@@ -160,7 +160,7 @@ export function Pricing() {
             </div>
             <div>
               <a
-                href="#" // TODO: Polar checkout URL
+                href="https://buy.polar.sh/polar_cl_GXU4TBTXSkt8Plin39rfKOGoDrSfzpIZwI37m3L4JJX"
                 className="inline-flex h-10 items-center rounded-xl bg-[linear-gradient(#ffffff,#e4e4e4)] px-4 text-sm font-semibold text-[#0a0a0a] shadow-[inset_0_1px_0_#fff,0_1px_2px_rgba(0,0,0,.5),0_10px_24px_rgba(0,0,0,.35)] transition-[transform,filter] hover:brightness-[.97] focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none active:translate-y-px"
               >
                 Get Pro
