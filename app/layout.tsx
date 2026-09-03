@@ -20,7 +20,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`scroll-smooth antialiased ${hand.variable}`}>
+    <html
+      lang="en"
+      className={`scroll-smooth antialiased ${hand.variable}`}
+      // Lets Next disable smooth scrolling during route transitions.
+      data-scroll-behavior="smooth"
+    >
       <body>{children}</body>
     </html>
   )
