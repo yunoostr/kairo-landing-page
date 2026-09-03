@@ -4,9 +4,8 @@ import { Kbd } from "@/components/ui/kbd"
 
 type QA = { q: string; a: React.ReactNode }
 
-const GROUPS: { label: string; title: string; items: QA[] }[] = [
+const GROUPS: { title: string; items: QA[] }[] = [
   {
-    label: "Money",
     title: "What you actually pay",
     items: [
       {
@@ -25,7 +24,6 @@ const GROUPS: { label: string; title: string; items: QA[] }[] = [
     ],
   },
   {
-    label: "Privacy",
     title: "What leaves your Mac",
     items: [
       {
@@ -43,7 +41,6 @@ const GROUPS: { label: string; title: string; items: QA[] }[] = [
     ],
   },
   {
-    label: "Setup",
     title: "Getting it running",
     items: [
       {
@@ -69,7 +66,7 @@ const GROUPS: { label: string; title: string; items: QA[] }[] = [
 
 export function Faq() {
   return (
-    <section className="mx-auto max-w-[1160px] px-8 pt-8 pb-32">
+    <section id="faq" className="mx-auto max-w-[1160px] px-8 pt-8 pb-32">
       <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
         Three things people check before buying.{" "}
         <span className="text-muted-foreground">
@@ -80,13 +77,10 @@ export function Faq() {
 
       <div className="mt-14 grid gap-px border border-border bg-border md:grid-cols-3">
         {GROUPS.map((g) => (
-          <div key={g.label} className="bg-background px-8 pt-7 pb-2">
-            <div className="font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
-              {g.label}
-            </div>
-            <p className="mt-3.5 mb-5 text-xl font-medium tracking-[-0.02em]">
+          <div key={g.title} className="bg-background px-8 pt-7 pb-2">
+            <div className="mb-5 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
               {g.title}
-            </p>
+            </div>
             {g.items.map((i) => (
               <details key={i.q} className="group border-t border-border">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-4 text-[15px] font-medium group-open:text-foreground hover:text-muted-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none [&::-webkit-details-marker]:hidden">

@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`antialiased ${hand.variable}`}>
+    <html lang="en" className={`scroll-smooth antialiased ${hand.variable}`}>
       <body>{children}</body>
     </html>
   )

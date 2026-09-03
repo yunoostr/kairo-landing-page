@@ -1,34 +1,32 @@
 import Image from "next/image"
 
-import { DownloadButton } from "@/components/download-button"
+import { DownloadButton, Tooltip } from "@/components/download-button"
 
 // TODO: real URLs (GitHub Releases, changelog, support, Polar legal pages)
-const COLUMNS: { title: string; links: { l: string; sub?: string }[] }[] = [
+// ponytail: `off` = page not written yet, rendered greyed & non-clickable
+const COLUMNS: {
+  title: string
+  links: { l: string; href?: string; off?: true }[]
+}[] = [
   {
     title: "Product",
     links: [
-      { l: "Download", sub: "Signed & notarized DMG" },
-      { l: "Kairo Pro" },
-      { l: "Changelog" },
-      { l: "Roadmap" },
+      { l: "Download", off: true },
+      { l: "Pricing", href: "/#pricing" },
+      { l: "Changelog", off: true },
+      { l: "Roadmap", off: true },
     ],
   },
   {
     title: "Help",
-    links: [
-      { l: "Setup guide", sub: "Accessibility permission, API key" },
-      { l: "FAQ" },
-      { l: "Email support" },
-      { l: "Manage license" },
-    ],
+    links: [{ l: "FAQ", href: "/#faq" }],
   },
   {
     title: "Legal",
     links: [
-      { l: "Privacy" },
-      { l: "Terms of sale" },
-      { l: "Refunds" },
-      { l: "Imprint" },
+      { l: "Terms of Service", href: "/terms" },
+      { l: "Refund Policy", href: "/refunds" },
+      { l: "Privacy Policy", href: "/privacy" },
     ],
   },
 ]
@@ -45,7 +43,7 @@ export function Footer() {
                 alt="Kairo"
                 width={634}
                 height={256}
-                className="h-6 w-auto"
+                className="h-7 w-auto"
               />
             </a>
             <p className="mt-3.5 max-w-[34ch] text-sm leading-[1.6] text-muted-foreground">
@@ -62,25 +60,30 @@ export function Footer() {
               <ul className="grid gap-2.5 text-sm">
                 {c.links.map((k) => (
                   <li key={k.l}>
-                    <a href="#" className="hover:text-muted-foreground">
-                      {k.l}
-                      {k.sub && (
-                        <span className="block text-xs text-muted-foreground">
-                          {k.sub}
-                        </span>
-                      )}
-                    </a>
+                    {k.off ? (
+                      <span
+                        aria-disabled
+                        className="group relative text-muted-foreground/60"
+                      >
+                        {k.l}
+                        {k.l === "Download" && <Tooltip />}
+                      </span>
+                    ) : (
+                      <a
+                        href={k.href ?? "#"}
+                        className="hover:text-muted-foreground"
+                      >
+                        {k.l}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="mt-12 flex flex-wrap justify-between gap-6 border-t border-border pt-5 text-[13px] text-muted-foreground">
-          <span>© 2026 Kairo. Sold by Polar as merchant of record.</span>
-          <span className="font-mono text-xs">
-            macOS 13 Ventura or later · Apple silicon & Intel
-          </span>
+        <div className="mt-12 border-t border-border pt-5 text-[13px] text-muted-foreground">
+          © 2026 Kairo.
         </div>
       </div>
     </footer>
