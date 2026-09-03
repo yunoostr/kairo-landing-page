@@ -90,6 +90,7 @@ void main(){
 }`
 
 const LUT_ROWS = 8
+const RISE_S = 1.5 // seconds for the ribbons to reach full amplitude
 
 export type ShaderBackgroundProps = {
   className?: string
@@ -162,6 +163,7 @@ export function ShaderBackground({
         program,
         uRes: gl.getUniformLocation(program, "u_res"),
         uTime: gl.getUniformLocation(program, "u_time"),
+        uWave: gl.getUniformLocation(program, "u_wave"),
       }
     }
     const lut = link(LUT_FRAG)
@@ -199,6 +201,10 @@ export function ShaderBackground({
       "(prefers-reduced-motion: reduce)"
     ).matches
     const animated = speed > 0 && !reduced
+    // Entrance: the canvas fades in while the ribbons swell from flat lines,
+    // like a scope trace waking up. Both start after the first frame exists,
+    // so they cover the hydration pop instead of running before it.
+    if (animated) canvas.style.animation = "fig-fade 1s ease-out both"
     let raf = 0
     let active = true
     let disposed = false
@@ -247,7 +253,9 @@ export function ShaderBackground({
         resize()
       } else if (dt <= 20) slow = 0
 
-      const t = ((now - start) / 1000) * speed
+      const elapsed = (now - start) / 1000
+      const t = elapsed * speed
+      const rise = animated ? 1 - (1 - Math.min(1, elapsed / RISE_S)) ** 3 : 1
       const { width, height } = canvas
 
       gl.bindFramebuffer(gl.FRAMEBUFFER, fb)
@@ -255,6 +263,7 @@ export function ShaderBackground({
       gl.useProgram(lut.program)
       gl.uniform2f(lut.uRes, width, height)
       gl.uniform1f(lut.uTime, t)
+      gl.uniform4f(lut.uWave, seed, amplitude * rise, lines, glow)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
 
       gl.bindFramebuffer(gl.FRAMEBUFFER, null)
