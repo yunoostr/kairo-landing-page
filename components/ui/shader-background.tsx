@@ -318,7 +318,11 @@ export function ShaderBackground({
       gl.deleteBuffer(buf)
       gl.deleteProgram(lut.program)
       gl.deleteProgram(main.program)
-      gl.getExtension("WEBGL_lose_context")?.loseContext()
+      // A canvas keeps one context for life, so only drop it on a real
+      // unmount. StrictMode's setup/cleanup/setup and prop changes reuse the
+      // canvas, and getContext would hand back the lost context: blank white.
+      if (!canvas.isConnected)
+        gl.getExtension("WEBGL_lose_context")?.loseContext()
     }
   }, [seed, amplitude, lines, spread, glow, brightness, vignette, grain, speed])
 
