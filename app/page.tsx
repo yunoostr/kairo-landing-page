@@ -42,7 +42,7 @@ export default function Home() {
               </a>
             ))}
           </nav>
-          <DownloadButton />
+          <DownloadButton align="end" />
         </header>
         <Hero />
       </div>

@@ -1,8 +1,8 @@
 import Image from "next/image"
 
-import { DownloadButton, Tooltip } from "@/components/download-button"
+import { DownloadButton } from "@/components/download-button"
 
-// TODO: real URLs (GitHub Releases, changelog, support, Polar legal pages)
+// TODO: real URLs (support)
 // ponytail: `off` = page not written yet, rendered greyed & non-clickable
 const COLUMNS: {
   title: string
@@ -11,9 +11,8 @@ const COLUMNS: {
   {
     title: "Product",
     links: [
-      { l: "Download", off: true },
       { l: "Pricing", href: "/#pricing" },
-      { l: "Changelog", off: true },
+      { l: "Changelog", href: "/changelog" },
       { l: "Roadmap", off: true },
     ],
   },
@@ -47,8 +46,8 @@ export function Footer() {
               />
             </a>
             <p className="mt-3.5 max-w-[34ch] text-sm leading-[1.6] text-muted-foreground">
-              Reads what your AI agent writes aloud, then shortens, translates or
-              humanizes it, from one shortcut in every macOS app.
+              Reads what your AI agent writes aloud, then shortens, translates
+              or humanizes it, from one shortcut in every macOS app.
             </p>
             <DownloadButton className="mt-5.5" />
           </div>
@@ -61,12 +60,8 @@ export function Footer() {
                 {c.links.map((k) => (
                   <li key={k.l}>
                     {k.off ? (
-                      <span
-                        aria-disabled
-                        className="group relative text-muted-foreground/60"
-                      >
+                      <span aria-disabled className="text-muted-foreground/60">
                         {k.l}
-                        {k.l === "Download" && <Tooltip />}
                       </span>
                     ) : (
                       <a
