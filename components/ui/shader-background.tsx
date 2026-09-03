@@ -212,6 +212,7 @@ export function ShaderBackground({
     let slow = 0
     let last = 0
     let box = { width: 0, height: 0 }
+    let lutWidth = 0
     const start = performance.now()
 
     const resize = () => {
@@ -226,6 +227,11 @@ export function ShaderBackground({
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width
         canvas.height = height
+      }
+      // Tracked apart from the canvas size: on a re-setup the canvas is
+      // already sized but the texture is brand new and still has no storage.
+      if (lutWidth !== width) {
+        lutWidth = width
         gl.texImage2D(
           gl.TEXTURE_2D,
           0,
