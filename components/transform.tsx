@@ -177,7 +177,7 @@ export function Transform() {
 
       <Reveal>
         <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-          Every AI answer, said the way a colleague would.{" "}
+          Shrink it, translate it, or make it human before you listen.{" "}
           <span className="text-muted-foreground">
             Select it, press{" "}
             <Kbd className="h-[1.55em] min-w-[1.3em] -translate-y-[0.08em] rounded-md px-[0.3em] align-middle text-[0.62em]">

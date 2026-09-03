@@ -10,14 +10,14 @@ import { wordEnds } from "@/lib/word-ends"
 
 // Words marked with * keep their glow once read.
 const HEADLINE =
-  "Every text on your Mac, *read *aloud. Then *made *human, *translated, or *summarized."
+  "Your agent writes faster than you can read. *Listen *instead."
 const HEAD_WORDS = HEADLINE.split(" ").map((w) => ({
   text: w.replace(/^\*/, ""),
   key: w.startsWith("*"),
 }))
 
 const SUBLINE =
-  "Select a passage and Kairo reads it aloud, word by word. Understand it in your language, get the gist in seconds, or make it sound like you, without leaving the app you're in."
+  "Plans, specs, PR reports, long answers. Select the text, hit one shortcut, and Kairo reads it aloud in any app on your Mac, word by word. Too long? Cut it to what changed, translate it, or make it sound like a colleague first."
 const WORDS = SUBLINE.split(" ")
 const ENDS = wordEnds(WORDS)
 

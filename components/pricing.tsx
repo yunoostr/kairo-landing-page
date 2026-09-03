@@ -76,7 +76,7 @@ export function Pricing() {
       <div className="mx-auto max-w-[1160px] px-8 pt-8 pb-32">
         <Reveal>
           <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-            Free to read. Pay once to make it yours.{" "}
+            Free to listen. Pay once, never again.{" "}
             <span className="text-muted-foreground">
               Kairo Pro is a lifetime license. OpenAI bills you cents per use on
               your own key, and Kairo never charges again.

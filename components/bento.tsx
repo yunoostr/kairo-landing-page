@@ -264,7 +264,7 @@ export function Bento() {
     <section className="mx-auto max-w-[1160px] px-8 pt-24 pb-32">
       <Reveal>
         <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-          Built for developers who read AI output all day.{" "}
+          Built for the part of the job nobody talks about: reading what the agent wrote.{" "}
           <span className="text-muted-foreground">
             Kairo lives in the menu bar, works in every app, and runs on the
             OpenAI key you already pay for.

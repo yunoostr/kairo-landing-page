@@ -47,8 +47,8 @@ export function Footer() {
               />
             </a>
             <p className="mt-3.5 max-w-[34ch] text-sm leading-[1.6] text-muted-foreground">
-              Reads any selected text aloud and transforms it with AI, from one
-              shortcut, in every macOS app.
+              Reads what your AI agent writes aloud, then shortens, translates or
+              humanizes it, from one shortcut in every macOS app.
             </p>
             <DownloadButton className="mt-5.5" />
           </div>
