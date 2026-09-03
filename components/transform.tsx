@@ -191,7 +191,7 @@ export function Transform() {
 
       <div className="mt-16 grid gap-px border border-border bg-border md:h-[560px] md:grid-cols-2">
         {/* Before */}
-        <Reveal className="grid h-[440px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-background px-7 pt-6 pb-7 md:h-auto">
+        <Reveal className="grid h-[440px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-background px-5 pt-6 pb-7 md:h-auto md:px-7">
           <div className="flex min-h-9 items-center justify-between">
             <div className="flex items-center gap-2.5 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
               <span className="size-2 rounded-full bg-secondary" />
@@ -222,12 +222,12 @@ export function Transform() {
         {/* After */}
         <Reveal
           delay={80}
-          className="grid h-[480px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-card px-7 pt-6 pb-7 md:h-auto"
+          className="grid h-[480px] min-h-0 grid-rows-[auto_1fr_auto] gap-4 bg-card px-5 pt-6 pb-7 md:h-auto md:px-7"
         >
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
             <div
               role="tablist"
-              className="relative inline-grid grid-cols-3 rounded-full bg-background p-1 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_0_1px_rgba(255,255,255,.06)]"
+              className="relative grid w-full grid-cols-3 rounded-full bg-background p-1 shadow-[inset_0_1px_0_rgba(255,255,255,.06),0_0_0_1px_rgba(255,255,255,.06)] sm:inline-grid sm:w-auto"
             >
               {/* The active pill slides between equal-width tabs. */}
               <span
@@ -243,7 +243,7 @@ export function Transform() {
                   role="tab"
                   aria-selected={a.key === action}
                   onClick={() => pick(a.key)}
-                  className="relative rounded-full px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground aria-selected:text-foreground"
+                  className="relative rounded-full px-2 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground aria-selected:text-foreground sm:px-3.5 sm:text-sm"
                 >
                   {a.name}
                 </button>
@@ -269,7 +269,7 @@ export function Transform() {
               current={current}
             />
           </div>
-          <div className="flex items-center justify-between border-t border-border pt-3.5">
+          <div className="flex flex-wrap items-center justify-between gap-y-2 border-t border-border pt-3.5">
             <div className="flex items-center gap-1.5">
               <button
                 onClick={listen}

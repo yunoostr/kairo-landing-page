@@ -146,6 +146,20 @@ html.transparent-window body {
       transform: scaleY(0);
     }
   }
+  /* Chain: a pulse travels stage by stage, in order, while the links march. */
+  @keyframes relay {
+    20%,
+    40% {
+      transform: scale(1.06);
+      filter: drop-shadow(0 0 5px rgba(197, 197, 197, 0.9));
+    }
+  }
+  @keyframes relay-stroke {
+    20%,
+    40% {
+      stroke: #c5c5c5;
+    }
+  }
   @keyframes ants {
     to {
       stroke-dashoffset: -6;
@@ -180,9 +194,6 @@ html.transparent-window body {
     transform-box: fill-box;
     transform-origin: 27% 22%;
   }
-  [data-fig] .last {
-    transition: filter 0.4s;
-  }
   .group:hover [data-fig="everywhere"] .float {
     animation: float 1.6s ease-in-out infinite;
   }
@@ -193,11 +204,18 @@ html.transparent-window body {
   .group:hover [data-fig="words"] .mark {
     animation: sweep 2.4s linear infinite;
   }
+  [data-fig] .stage {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  .group:hover [data-fig="chain"] .stage {
+    animation: relay 1.8s calc(var(--k) * 450ms) ease-in-out infinite;
+  }
+  .group:hover [data-fig="chain"] .stage .draw {
+    animation: relay-stroke 1.8s calc(var(--k) * 450ms) ease-in-out infinite;
+  }
   .group:hover [data-fig="chain"] line:not(.draw) {
     animation: ants 0.6s linear infinite;
-  }
-  .group:hover [data-fig="chain"] .last {
-    filter: drop-shadow(0 0 5px rgba(197, 197, 197, 0.8));
   }
   .group:hover [data-fig="key"] .key {
     animation: turn 0.7s ease-in-out both;

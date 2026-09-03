@@ -171,7 +171,11 @@ const FIGS = {
           [44, -16],
         ] as const
       ).map(([x, y], i) => (
-        <g key={i} className={i === 2 ? "last" : undefined}>
+        <g
+          key={i}
+          className="stage"
+          style={{ "--k": i } as React.CSSProperties}
+        >
           <Box
             x={x}
             y={y}
