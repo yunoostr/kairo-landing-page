@@ -67,7 +67,7 @@ const GROUPS: { title: string; items: QA[] }[] = [
 
 export function Faq() {
   return (
-    <section id="faq" className="mx-auto max-w-[1160px] px-8 pt-8 pb-32">
+    <section id="faq" className="mx-auto scroll-mt-16 max-w-[1160px] px-8 pt-8 pb-32">
       <Reveal>
         <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
           Three things people check before buying.{" "}

@@ -261,7 +261,7 @@ const CELLS: {
 
 export function Bento() {
   return (
-    <section className="mx-auto max-w-[1160px] px-8 pt-24 pb-32">
+    <section id="features" className="mx-auto scroll-mt-16 max-w-[1160px] px-8 pt-24 pb-32">
       <Reveal>
         <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
           Built for the part of the job nobody talks about: reading what the agent wrote.{" "}

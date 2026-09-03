@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { IconPlayerPlayFilled } from "@tabler/icons-react"
 
 import { DownloadButton } from "@/components/download-button"
-import { ShaderBackground } from "@/components/ui/shader-background"
 import { cn } from "@/lib/utils"
 import { wordEnds } from "@/lib/word-ends"
 
@@ -84,8 +83,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative overflow-hidden">
-      <ShaderBackground className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_30%,transparent_95%)]" />
+    <section>
       <audio ref={audio} src="/subline.mp3" preload="auto" />
 
       <div className="mx-auto max-w-[1160px] px-8 pt-28 pb-42">

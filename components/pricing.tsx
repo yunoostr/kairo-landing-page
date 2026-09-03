@@ -61,7 +61,7 @@ function Feature({ b, rest, locked }: Feat & { locked?: boolean }) {
 
 export function Pricing() {
   return (
-    <section id="pricing" className="relative">
+    <section id="pricing" className="relative scroll-mt-16">
       {/* Bleeds ~70% past the section so the next sections start on the tinted ground. */}
       <ShaderBackground
         seed={23}
