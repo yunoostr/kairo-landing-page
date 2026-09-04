@@ -21,6 +21,8 @@ only bright objects are Kairo's.
 | Beat 3 language   | Slack message in French, translated to English, read aloud in English   |
 | Apps              | Claude Code, GitHub, Slack (what the target reader opens every day)     |
 | Hero player       | Unchanged; the hero keeps its own subline player                         |
+| Pause (added 2026-09-04) | Click on the desk, the Pause pill or Space pauses a run; Resume continues the voice where it stopped |
+| Length (revised 2026-09-04) | Texts cut to ~30 spoken words, voices generated at `speed: 1.5` (9.2 s + 8.2 s); whole run ≈ 30 s |
 
 ## Placement and frame
 
