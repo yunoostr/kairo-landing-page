@@ -4,6 +4,7 @@ import { DownloadButton } from "@/components/download-button"
 import { Bento } from "@/components/bento"
 import { ClosingCta } from "@/components/closing-cta"
 import { Dock } from "@/components/dock"
+import { Demo } from "@/components/demo"
 import { Faq } from "@/components/faq"
 import { Footer } from "@/components/footer"
 import { Hero } from "@/components/hero"
@@ -67,6 +68,7 @@ export default function Home() {
         </header>
         <Hero />
       </div>
+      <Demo />
       <Dock links={NAV} />
       <Bento />
       <Transform />
