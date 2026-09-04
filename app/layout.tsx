@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Caveat } from "next/font/google"
+import Script from "next/script"
 
 import "./globals.css"
 
@@ -57,6 +58,12 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
+        {/* Cookieless audience measurement. data-domains keeps localhost and previews out of the stats. */}
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id="b68da5a2-6181-42fc-ac91-901ac48a604d"
+          data-domains="kairoagent.io"
         />
       </body>
     </html>
