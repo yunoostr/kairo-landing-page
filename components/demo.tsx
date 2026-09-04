@@ -117,14 +117,14 @@ function Win({
     <div
       className={cn(
         CARD,
-        "absolute overflow-hidden transition-opacity duration-500 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95",
+        "absolute flex flex-col overflow-hidden transition-opacity duration-500 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95",
         dim && "opacity-60",
         className
       )}
     >
       <div
         className={cn(
-          "flex h-[2.3em] items-center gap-[0.5em] border-b border-border px-[0.8em] text-[0.9em] text-muted-foreground",
+          "flex h-[2.3em] shrink-0 items-center gap-[0.5em] border-b border-border px-[0.8em] text-[0.9em] text-muted-foreground",
           bar
         )}
       >
@@ -280,10 +280,15 @@ export function Demo() {
     const el = audio.current[phase]
     const ends = wordEnds(AUDIO[phase]!.text.split(" "))
     let fired = false
+    // The lamp is sampled every frame, not on `timeupdate` (4 Hz, up to a
+    // word behind at 1.5x). ponytail: +120 ms of lead covers the silence the
+    // TTS files open with; tune it if a voice is regenerated.
+    let raf = 0
     const onTime = () => {
       if (!el) return
-      setCurrent(ends.findIndex((e) => el.currentTime / (el.duration || 1) < e))
-      setTime(el.currentTime)
+      setCurrent(ends.findIndex((e) => (el.currentTime + 0.12) / (el.duration || 1) < e))
+      setTime(Math.floor(el.currentTime))
+      raf = requestAnimationFrame(onTime)
     }
     const done = () => {
       if (fired) return
@@ -297,7 +302,7 @@ export function Demo() {
     const fail = () => {
       failId = setTimeout(done, 2000)
     }
-    el?.addEventListener("timeupdate", onTime)
+    raf = requestAnimationFrame(onTime)
     el?.addEventListener("ended", done)
     el?.addEventListener("error", fail)
     el?.play().catch(fail)
@@ -306,7 +311,7 @@ export function Demo() {
       fired = true
       clearTimeout(hardId)
       clearTimeout(failId)
-      el?.removeEventListener("timeupdate", onTime)
+      cancelAnimationFrame(raf)
       el?.removeEventListener("ended", done)
       el?.removeEventListener("error", fail)
       el?.pause()
@@ -348,17 +353,8 @@ export function Demo() {
         />
       ))}
 
-      <Reveal>
-        <p className="max-w-[34ch] text-2xl leading-[1.25] tracking-[-0.02em] text-pretty md:text-[34px]">
-          It floats over whatever you are in.{" "}
-          <span className="text-muted-foreground">
-            Claude Code, a pull request, Slack. Same shortcut, same pill,
-            nothing to switch to.
-          </span>
-        </p>
-      </Reveal>
 
-      <Reveal delay={80} className="relative mt-16 aspect-[16/10] overflow-hidden border border-border bg-[#0d0d0d] @container">
+      <Reveal className="relative aspect-[16/10] overflow-hidden border border-border bg-[#0d0d0d] @container">
         <div
           aria-hidden
           onClick={toggle}
@@ -464,7 +460,7 @@ export function Demo() {
               bar="border-[#3f0e40] bg-[#4a154b] text-[#e9d5ea]"
             >
               {/* Slack, Aubergine theme: sidebar, active channel in blue, white message pane, composer. */}
-              <div className="grid h-[calc(100%-2.3em)] grid-cols-[32%_1fr]">
+              <div className="grid min-h-0 flex-1 grid-cols-[32%_1fr]">
                 <div className="bg-[#4a154b] px-[0.6em] py-[0.7em] text-[0.9em] leading-[1.9] text-[#e9d5ea]">
                   <p className="px-[0.5em] pb-[0.4em] text-[1.05em] font-bold text-white">Kairo ▾</p>
                   <p className="px-[0.5em] text-[0.9em] text-[#e9d5ea]/70">Channels</p>
