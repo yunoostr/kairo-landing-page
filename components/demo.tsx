@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react"
+import { memo, useEffect, useRef, useState, useSyncExternalStore } from "react"
 import {
   IconPlayerPlayFilled,
   IconRotateClockwise,
@@ -44,7 +44,7 @@ const subscribe = (cb: () => void) => {
 // Words revealed one by one: the first `shown` exist, the first `selected`
 // are swept, `current` is lit by the lamp. `code` words keep their backticks
 // in the source and render as inline code.
-function Words({
+const Words = memo(function Words({
   text,
   shown = Infinity,
   selected = 0,
@@ -84,7 +84,7 @@ function Words({
       )}
     </>
   )
-}
+})
 
 function Win({
   title,
@@ -127,7 +127,22 @@ function Cap({ children }: { children: React.ReactNode }) {
   )
 }
 
-function Player({ playing, children }: { playing: boolean; children?: React.ReactNode }) {
+// mm:ss for the player pill; "00:00" at rest.
+function clock(s: number) {
+  const m = Math.floor(s / 60)
+  const sec = Math.floor(s % 60)
+  return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`
+}
+
+function Player({
+  playing,
+  time,
+  children,
+}: {
+  playing: boolean
+  time: number
+  children?: React.ReactNode
+}) {
   return (
     <div className="absolute top-[6%] right-[4%] flex w-[24%] flex-col gap-[0.5em] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2 motion-safe:duration-300">
       <div className={cn(PILL, "flex h-[2.6em] items-center gap-[0.7em] pr-[0.9em] pl-[0.6em]")}>
@@ -135,15 +150,15 @@ function Player({ playing, children }: { playing: boolean; children?: React.Reac
           <IconPlayerPlayFilled className="ml-px size-[0.6em]" />
         </span>
         <span className="font-mono text-[0.85em] text-muted-foreground tabular-nums">
-          {playing ? "00:04" : "00:00"}
+          {clock(time)}
         </span>
         <span className="font-mono text-[0.85em] text-muted-foreground">1×</span>
-        <span aria-hidden className="ml-auto flex h-[0.9em] items-end gap-[2px]">
+        <span aria-hidden className="ml-auto flex h-[10px] items-end gap-[2px]">
           {[0, 1, 2].map((i) => (
             <i
               key={i}
               className={cn(
-                "block h-[0.5em] w-[2px] rounded-[1px] bg-primary",
+                "block h-[7px] w-[2px] rounded-[1px] bg-primary",
                 playing && "motion-safe:animate-[eq_.5s_ease-in-out_infinite_alternate]"
               )}
               style={{ animationDelay: `${i * -170}ms` }}
@@ -164,14 +179,31 @@ export function Demo() {
   // One state object so a phase change resets the tick counter in the same render.
   const [s, setS] = useState<{ phase: Phase; n: number }>({ phase: "rest", n: 0 })
   const [current, setCurrent] = useState(-1) // word being read
+  const [time, setTime] = useState(0) // player pill clock
   const audio = useRef<Record<string, HTMLAudioElement | null>>({})
+  const sectionRef = useRef<HTMLElement>(null)
   const reduced = useSyncExternalStore(
     subscribe,
     () => matchMedia(REDUCED).matches,
     () => false
   )
   const go = (phase: Phase) => setS({ phase, n: 0 })
-  const click = () => go(advance(s.phase, "click"))
+  const click = () => {
+    // Unlock both voices on this user gesture so a later programmatic
+    // play() is allowed on WebKit, then load preload="metadata" for real.
+    for (const el of Object.values(audio.current)) {
+      if (!el) continue
+      el
+        .play()
+        .then(() => {
+          el.pause()
+          el.currentTime = 0
+        })
+        .catch(() => {})
+    }
+    go(advance(s.phase, "click"))
+    document.getElementById("demo")?.focus()
+  }
 
   // Streaming and sweeping read from one counter that restarts every phase.
   useEffect(() => {
@@ -181,8 +213,25 @@ export function Demo() {
     return () => clearInterval(id)
   }, [s.phase])
 
+  // Stop the run when the demo scrolls out of view so it doesn't keep
+  // playing audio off-screen.
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.intersectionRatio < 0.3) go("rest")
+      },
+      { threshold: [0.3] }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   // Timed phases end on a timeout, audio phases on `ended`. A phase whose
-  // file never plays (blocked, missing) still ends after 25 s.
+  // file never plays (blocked, missing) still ends shortly after, and a
+  // rejected/erroring play() waits 2 s before moving on so the pill can
+  // show briefly rather than skipping the read beat outright.
   useEffect(() => {
     const phase = s.phase
     const end = ENDS[phase]
@@ -193,22 +242,35 @@ export function Demo() {
     }
     const el = audio.current[phase]
     const ends = wordEnds(AUDIO[phase]!.text.split(" "))
-    const onTime = () =>
-      el && setCurrent(ends.findIndex((e) => el.currentTime / (el.duration || 1) < e))
+    let fired = false
+    const onTime = () => {
+      if (!el) return
+      setCurrent(ends.findIndex((e) => el.currentTime / (el.duration || 1) < e))
+      setTime(el.currentTime)
+    }
     const done = () => {
+      if (fired) return
+      fired = true
       setCurrent(-1)
+      setTime(0)
       go(advance(phase, "ended"))
+    }
+    let failId: ReturnType<typeof setTimeout> | undefined
+    const fail = () => {
+      failId = setTimeout(done, 2000)
     }
     el?.addEventListener("timeupdate", onTime)
     el?.addEventListener("ended", done)
-    el?.addEventListener("error", done)
-    el?.play().catch(done)
-    const id = setTimeout(done, 25_000)
+    el?.addEventListener("error", fail)
+    el?.play().catch(fail)
+    const hardId = setTimeout(done, ((el?.duration || 30) + 3) * 1000)
     return () => {
-      clearTimeout(id)
+      fired = true
+      clearTimeout(hardId)
+      clearTimeout(failId)
       el?.removeEventListener("timeupdate", onTime)
       el?.removeEventListener("ended", done)
-      el?.removeEventListener("error", done)
+      el?.removeEventListener("error", fail)
       if (el) {
         el.pause()
         el.currentTime = 0
@@ -228,7 +290,12 @@ export function Demo() {
   const lit = reduced ? -1 : current
 
   return (
-    <section id="demo" className="mx-auto max-w-[1160px] px-8 pb-32">
+    <section
+      id="demo"
+      ref={sectionRef}
+      tabIndex={-1}
+      className="mx-auto max-w-[1160px] px-8 pb-32 outline-none"
+    >
       {Object.entries(AUDIO).map(([phase, a]) => (
         <audio
           key={phase}
@@ -236,7 +303,7 @@ export function Demo() {
             audio.current[phase] = el
           }}
           src={a.src}
-          preload="auto"
+          preload="metadata"
         />
       ))}
 
@@ -251,7 +318,7 @@ export function Demo() {
       </Reveal>
 
       <Reveal delay={80} className="relative mt-16 aspect-[16/10] overflow-hidden border border-border bg-[#0d0d0d] @container">
-        <div aria-hidden className="absolute inset-0 text-[1.2cqw] leading-[1.5]">
+        <div aria-hidden className="absolute inset-0 text-[max(7px,1.2cqw)] leading-[1.5]">
           <ShaderBackground
             seed={23}
             lines={3}
@@ -327,11 +394,11 @@ export function Demo() {
           )}
 
           {is("claude-shortcut", "claude-read") && (
-            <Player playing={playing}>
+            <Player playing={playing} time={time}>
               <Words text={PLAN} current={lit} />
             </Player>
           )}
-          {is("slack-listen", "end") && <Player playing={playing} />}
+          {is("slack-listen", "end") && <Player playing={playing} time={time} />}
 
           {at("pr-shortcut") && (
             <div className="absolute top-[5%] left-1/2 flex w-[40%] -translate-x-1/2 flex-col items-center gap-[0.6em] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2 motion-safe:duration-300">
@@ -349,7 +416,7 @@ export function Demo() {
                     {a}
                   </span>
                 ))}
-                {at("slack-translate") && (
+                {at("slack-shortcut") && (
                   <span className="rounded-full px-[0.8em] py-[0.25em] font-mono text-[0.85em] text-muted-foreground uppercase">
                     fr → en
                   </span>
@@ -379,7 +446,7 @@ export function Demo() {
             </div>
           )}
 
-          <div className="absolute bottom-[3%] left-1/2 flex -translate-x-1/2 gap-[0.6em] rounded-[1em] border border-white/[0.08] bg-card/70 p-[0.45em] backdrop-blur-md">
+          <div className="absolute bottom-[9%] left-1/2 flex -translate-x-1/2 gap-[0.6em] rounded-[1em] border border-white/[0.08] bg-card/70 p-[0.45em] backdrop-blur-md">
             {["❯", "⎇", "#", "K"].map((g) => (
               <span
                 key={g}
@@ -404,7 +471,6 @@ export function Demo() {
             <button
               type="button"
               onClick={click}
-              aria-label={is("end") ? "Replay the demo" : "Play the demo"}
               className={cn(
                 PILL,
                 "flex h-11 items-center gap-2.5 pr-5 pl-4 text-[15px] font-medium transition-transform hover:scale-[1.03] focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none active:scale-[0.98]"
