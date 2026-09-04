@@ -140,7 +140,7 @@ switches per phase, `preload="auto"` so the first click has no gap.
   meaning.
 - Clicking Replay while audio plays stops the audio first.
 - If an audio element errors or never fires `ended` (blocked autoplay,
-  missing file), the phase also ends on a fallback timer of 12 s so the
+  missing file), the phase also ends on a fallback timer of 25 s so the
   demo never stalls.
 - The section unmounting clears the pending timeout and pauses audio.
 
