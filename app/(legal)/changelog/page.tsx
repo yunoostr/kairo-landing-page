@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 
-export const metadata = { title: "Changelog · Kairo" }
+export const metadata = { title: "Changelog - Kairo" }
 
 const REPO = "https://github.com/nathanrenard3/kairo-releases"
 

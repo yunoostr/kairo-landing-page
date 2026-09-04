@@ -86,15 +86,15 @@ export const RESULTS: Record<Action, Block[]> = {
   summarize: [
     {
       kind: "p",
-      label: "Done ·",
+      label: "Done -",
       text: "`fetchUser` retries 3× with backoff, errors are caught and logged, return type is `Promise<User | null>`.",
     },
     {
       kind: "p",
-      label: "Changed ·",
+      label: "Changed -",
       text: "the `fetchUser` function body and signature.",
     },
-    { kind: "p", label: "To decide ·", text: "whether to add unit tests." },
+    { kind: "p", label: "To decide -", text: "whether to add unit tests." },
   ],
 }
 

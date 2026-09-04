@@ -13,7 +13,7 @@ const COLUMNS: {
     links: [
       { l: "Pricing", href: "/#pricing" },
       { l: "Changelog", href: "/changelog" },
-      { l: "Roadmap", off: true },
+      { l: "Roadmap", href: "/roadmap" },
     ],
   },
   {

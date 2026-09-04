@@ -25,7 +25,7 @@ test("inline code stays one token and punctuation glues to it", () => {
 
 test("labels are bold, pre blocks are unspoken", () => {
   const t = tokenize([
-    { kind: "li", label: "Done ·", text: "x" },
+    { kind: "li", label: "Done -", text: "x" },
     { kind: "pre", text: "code" },
   ])
   assert.deepEqual(
