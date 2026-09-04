@@ -26,8 +26,8 @@ import { wordEnds } from "@/lib/word-ends"
 
 // Which phases play a file, and the words the lamp follows meanwhile.
 const AUDIO: Partial<Record<Phase, { src: string; text: string }>> = {
-  "claude-read": { src: "/demo-plan.mp3", text: PLAN },
-  "slack-listen": { src: "/demo-translate.mp3", text: SLACK_EN },
+  "claude-read": { src: "/demo-plan-1.5x.mp3", text: PLAN },
+  "slack-listen": { src: "/demo-translate-1.5x.mp3", text: SLACK_EN },
 }
 
 const PILL =
@@ -157,7 +157,7 @@ function Player({
         <span className="font-mono text-[0.85em] text-muted-foreground tabular-nums">
           {clock(time)}
         </span>
-        <span className="font-mono text-[0.85em] text-muted-foreground">1×</span>
+        <span className="font-mono text-[0.85em] text-muted-foreground">1.5×</span>
         <span aria-hidden className="ml-auto flex h-[10px] items-end gap-[2px]">
           {[0, 1, 2].map((i) => (
             <i
