@@ -545,7 +545,7 @@ export function Demo() {
           {is("claude-shortcut", "pr-shortcut", "slack-shortcut") && (
             <div
               key={p}
-              className="absolute bottom-[16%] left-1/2 flex -translate-x-1/2 items-center gap-[0.6em] motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-90 motion-safe:duration-300"
+              className="absolute bottom-[23%] left-1/2 flex -translate-x-1/2 items-center gap-[0.6em] motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-90 motion-safe:duration-300"
             >
               <Cap>⌥</Cap>
               <Cap>{is("claude-shortcut") ? "A" : "T"}</Cap>
