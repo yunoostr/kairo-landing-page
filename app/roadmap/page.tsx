@@ -122,10 +122,14 @@ export default async function Roadmap() {
                         <span className="opacity-60">
                           {shipped && i.closed_at ? fmt.format(new Date(i.closed_at)) : ""}
                         </span>
-                        <span className="flex items-center gap-1.5" title={`${i.reactions["+1"]} thumbs up on #${i.number}`}>
+                        <a
+                          href={i.html_url}
+                          title="Vote with a thumbs up on GitHub"
+                          className="flex items-center gap-1.5 rounded-md px-1.5 py-0.5 -mr-1.5 hover:bg-muted hover:text-foreground"
+                        >
                           <IconThumbUp className="size-3" />
                           {i.reactions["+1"]}
-                        </span>
+                        </a>
                       </div>
                     </div>
                   ))}
