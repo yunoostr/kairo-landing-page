@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { IconArrowRight } from "@tabler/icons-react"
 
 import { DownloadButton } from "@/components/download-button"
 import { Bento } from "@/components/bento"
@@ -34,9 +35,10 @@ export default function Home() {
           </span>
           <a
             href="#pricing"
-            className="font-medium whitespace-nowrap text-primary transition-colors hover:text-foreground hover:underline hover:underline-offset-3"
+            className="inline-flex items-center gap-1 font-medium whitespace-nowrap text-primary transition-colors hover:text-foreground hover:underline hover:underline-offset-3"
           >
-            Get Pro →
+            Get Pro
+            <IconArrowRight size={14} stroke={2} aria-hidden />
           </a>
         </div>
         <header
