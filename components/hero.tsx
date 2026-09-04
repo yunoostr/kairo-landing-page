@@ -87,7 +87,7 @@ export function Hero() {
       <audio ref={audio} src="/subline.mp3" preload="auto" />
 
       <div className="mx-auto max-w-[1160px] px-8 pt-28 pb-42">
-        <h1 className="max-w-[19ch] text-5xl leading-[1.12] font-semibold tracking-[-0.03em] text-muted-foreground md:text-[60px]">
+        <h1 className="max-w-[19ch] text-[40px] leading-[1.12] font-semibold tracking-[-0.03em] text-muted-foreground md:text-[52px]">
           {HEAD_WORDS.map((w, i) => (
             <span key={i}>
               <span
