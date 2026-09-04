@@ -340,7 +340,7 @@ export function Demo() {
           toggle()
         }
       }}
-      className="mx-auto max-w-[1160px] px-8 pb-32 outline-none"
+      className="mx-auto hidden max-w-[1160px] px-8 pb-32 outline-none md:block"
     >
       {Object.entries(AUDIO).map(([phase, a]) => (
         <audio
