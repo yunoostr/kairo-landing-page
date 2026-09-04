@@ -18,6 +18,8 @@ only bright objects are Kairo's.
 | Story             | Three apps in sequence: Claude Code → GitHub PR → Slack                  |
 | Playback          | Click to start, plays the real TTS voice, ends blurred with Replay       |
 | Visual direction  | "A · La salle de lecture": desktop in site palette, no app colors       |
+| App windows (revised 2026-09-04) | Nathan asked for realism: GitHub PR in GitHub dark (`#0d1117`, Open badge, tabs), Slack in the Aubergine theme (`#4a154b` sidebar, blue active channel, white pane). Ghostty stays dark. The desk, dock, pills and keycaps stay achromatic. |
+| Player pill (revised 2026-09-04) | Smaller than the transcript card and right-aligned above it, like the real app |
 | Beat 3 language   | Slack message in French, translated to English, read aloud in English   |
 | Apps              | Claude Code, GitHub, Slack (what the target reader opens every day)     |
 | Hero player       | Unchanged; the hero keeps its own subline player                         |

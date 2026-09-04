@@ -59,12 +59,14 @@ const Words = memo(function Words({
   selected = 0,
   current = -1,
   caret,
+  light,
 }: {
   text: string
   shown?: number
   selected?: number
   current?: number
   caret?: boolean
+  light?: boolean // on a white app pane: macOS blue selection, dark code chips
 }) {
   const words = text.split(" ")
   const n = Math.min(shown, words.length)
@@ -76,8 +78,11 @@ const Words = memo(function Words({
             className={cn(
               "-mx-[0.08em] rounded-[0.2em] px-[0.08em] transition-colors duration-150",
               w.startsWith("`") &&
-                "mx-0 bg-white/[0.06] px-[0.3em] font-mono text-[0.9em] text-foreground",
-              i < selected && "bg-white/[0.13] text-foreground",
+                (light
+                  ? "mx-0 bg-black/[0.06] px-[0.3em] font-mono text-[0.9em]"
+                  : "mx-0 bg-white/[0.06] px-[0.3em] font-mono text-[0.9em] text-foreground"),
+              i < selected &&
+                (light ? "bg-[#b4d5fe]" : "bg-white/[0.13] text-foreground"),
               i === current && "bg-primary/75 text-background"
             )}
           >
@@ -99,11 +104,13 @@ function Win({
   title,
   dim,
   className,
+  bar,
   children,
 }: {
   title: string
   dim?: boolean
   className?: string
+  bar?: string // title bar colors, for apps that paint their own chrome
   children: React.ReactNode
 }) {
   return (
@@ -115,7 +122,12 @@ function Win({
         className
       )}
     >
-      <div className="flex h-[2.3em] items-center gap-[0.5em] border-b border-border px-[0.8em] text-[0.9em] text-muted-foreground">
+      <div
+        className={cn(
+          "flex h-[2.3em] items-center gap-[0.5em] border-b border-border px-[0.8em] text-[0.9em] text-muted-foreground",
+          bar
+        )}
+      >
         <span className="flex gap-[0.4em]">
           {[0, 1, 2].map((i) => (
             <i key={i} className="block size-[0.75em] rounded-full bg-[#3a3a3a]" />
@@ -153,8 +165,9 @@ function Player({
   children?: React.ReactNode
 }) {
   return (
-    <div className="absolute top-[6%] right-[4%] flex w-[24%] flex-col gap-[0.5em] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2 motion-safe:duration-300">
-      <div className={cn(PILL, "flex h-[2.6em] items-center gap-[0.7em] pr-[0.9em] pl-[0.6em]")}>
+    <div className="absolute top-[6%] right-[4%] flex w-[24%] flex-col items-end gap-[0.5em] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2 motion-safe:duration-300">
+      {/* The real player pill hugs its content and sits at the right edge of the transcript. */}
+      <div className={cn(PILL, "flex h-[2.1em] w-[70%] items-center gap-[0.6em] pr-[0.8em] pl-[0.5em]")}>
         <span className="grid size-[1.4em] place-items-center rounded-full bg-primary text-background">
           {playing ? (
             <IconPlayerPauseFilled className="size-[0.6em]" />
@@ -180,7 +193,7 @@ function Player({
         </span>
       </div>
       {children && (
-        <div className={cn(CARD, "px-[0.9em] py-[0.7em] text-[0.9em] leading-[1.5] text-muted-foreground")}>
+        <div className={cn(CARD, "w-full px-[0.9em] py-[0.7em] text-[0.9em] leading-[1.5] text-muted-foreground")}>
           {children}
         </div>
       )}
@@ -391,38 +404,100 @@ export function Demo() {
           )}
 
           {at("pr-open") && (
-            <Win title="Pull request #482 · GitHub" dim={at("slack-open")} className="top-[20%] left-[38%] h-[66%] w-[56%]">
-              <div className="p-[1.1em] text-muted-foreground">
-                <p className="mb-[0.6em] font-medium text-foreground">
-                  Refactor auth to server sessions
+            <Win
+              title="Refactor auth to server sessions · Pull Request #482 · GitHub"
+              dim={at("slack-open")}
+              className="top-[20%] left-[38%] h-[66%] w-[56%] bg-[#0d1117] text-[#e6edf3]"
+              bar="border-[#30363d] bg-[#010409] text-[#8b949e]"
+            >
+              {/* GitHub dark: PR header, state badge, tabs, the description as the first comment. */}
+              <div className="px-[1.4em] pt-[1.1em] leading-[1.45]">
+                <p className="text-[1.5em] leading-[1.25] font-normal">
+                  Refactor auth to server sessions{" "}
+                  <span className="font-light text-[#8b949e]">#482</span>
                 </p>
-                <p>
-                  <Words
-                    key={at("pr-replace") ? "after" : "before"}
-                    text={at("pr-replace") ? PR_SUMMARY : PR_BODY}
-                    selected={is("pr-open") ? n : is("pr-shortcut", "pr-summarize") ? all : 0}
-                  />
+                <p className="mt-[0.5em] flex items-center gap-[0.6em] text-[0.95em] text-[#8b949e]">
+                  <span className="rounded-full bg-[#238636] px-[0.7em] py-[0.15em] font-medium text-white">
+                    ⎇ Open
+                  </span>
+                  <span>
+                    <b className="font-medium text-[#e6edf3]">nathan</b> wants to merge 3 commits
+                    into <code className="rounded-[0.3em] bg-[#388bfd26] px-[0.35em] text-[#4493f8]">main</code> from{" "}
+                    <code className="rounded-[0.3em] bg-[#388bfd26] px-[0.35em] text-[#4493f8]">auth/sessions</code>
+                  </span>
                 </p>
+                <div className="mt-[0.9em] flex gap-[1.2em] border-b border-[#30363d] text-[0.95em] text-[#8b949e]">
+                  {[["Conversation", 4, true], ["Commits", 3], ["Files changed", 6]].map(([t, c, on]) => (
+                    <span
+                      key={String(t)}
+                      className={cn(
+                        "flex items-center gap-[0.4em] pb-[0.5em]",
+                        on && "border-b-[0.15em] border-[#f78166] text-[#e6edf3]"
+                      )}
+                    >
+                      {t}
+                      <span className="rounded-full bg-[#6e768166] px-[0.5em] text-[0.85em] text-[#e6edf3]">{c}</span>
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-[1em] rounded-[0.5em] border border-[#30363d]">
+                  <div className="flex items-center gap-[0.5em] rounded-t-[0.5em] border-b border-[#30363d] bg-[#161b22] px-[0.9em] py-[0.5em] text-[0.9em] text-[#8b949e]">
+                    <span className="size-[1.4em] rounded-full bg-linear-to-br from-[#6e40c9] to-[#1f6feb]" />
+                    <b className="font-medium text-[#e6edf3]">nathan</b> commented 2 hours ago
+                  </div>
+                  <p className="px-[0.9em] py-[0.8em] text-[#e6edf3]">
+                    <Words
+                      key={at("pr-replace") ? "after" : "before"}
+                      text={at("pr-replace") ? PR_SUMMARY : PR_BODY}
+                      selected={is("pr-open") ? n : is("pr-shortcut", "pr-summarize") ? all : 0}
+                    />
+                  </p>
+                </div>
               </div>
             </Win>
           )}
 
           {at("slack-open") && (
-            <Win title="#standup · Slack" className="top-[30%] left-[18%] h-[60%] w-[52%]">
-              <div className="grid h-full grid-cols-[30%_1fr]">
-                <div className="border-r border-border p-[0.9em] text-[0.9em] leading-[2] text-muted-foreground">
-                  <p># announcements</p>
-                  <p className="-mx-[0.5em] rounded-[0.4em] bg-secondary px-[0.5em] text-foreground"># standup</p>
-                  <p># design</p>
+            <Win
+              title="#standup · Kairo · Slack"
+              className="top-[25%] left-[18%] h-[57%] w-[52%] bg-white text-[#1d1c1d]"
+              bar="border-[#3f0e40] bg-[#4a154b] text-[#e9d5ea]"
+            >
+              {/* Slack, Aubergine theme: sidebar, active channel in blue, white message pane, composer. */}
+              <div className="grid h-[calc(100%-2.3em)] grid-cols-[32%_1fr]">
+                <div className="bg-[#4a154b] px-[0.6em] py-[0.7em] text-[0.9em] leading-[1.9] text-[#e9d5ea]">
+                  <p className="px-[0.5em] pb-[0.4em] text-[1.05em] font-bold text-white">Kairo ▾</p>
+                  <p className="px-[0.5em] text-[0.9em] text-[#e9d5ea]/70">Channels</p>
+                  <p className="px-[0.5em]"># announcements</p>
+                  <p className="rounded-[0.35em] bg-[#1164a3] px-[0.5em] font-medium text-white"># standup</p>
+                  <p className="px-[0.5em]"># design</p>
+                  <p className="mt-[0.4em] px-[0.5em] text-[0.9em] text-[#e9d5ea]/70">Direct messages</p>
+                  <p className="px-[0.5em]">Lisa</p>
+                  <p className="px-[0.5em]">Dario</p>
                 </div>
-                <div className="p-[1em] text-muted-foreground">
-                  <p className="mb-[0.4em]">
-                    <span className="font-medium text-foreground">Lisa</span>{" "}
-                    <span className="text-[0.85em]">10:41</span>
-                  </p>
-                  <p>
-                    <Words text={SLACK_FR} selected={is("slack-open") ? n : at("slack-shortcut") ? all : 0} />
-                  </p>
+                <div className="flex flex-col">
+                  <p className="border-b border-[#dddddd] px-[1em] py-[0.55em] font-bold">#standup</p>
+                  <div className="flex flex-1 gap-[0.7em] px-[1em] pt-[1em]">
+                    <span className="mt-[0.15em] grid size-[2.4em] shrink-0 place-items-center rounded-[0.5em] bg-[#e8912d] font-bold text-white">
+                      L
+                    </span>
+                    <div className="leading-[1.45]">
+                      <p className="mb-[0.15em]">
+                        <b className="font-bold">Lisa</b>{" "}
+                        <span className="text-[0.85em] text-[#616061]">10:41</span>
+                      </p>
+                      <p>
+                        <Words
+                          light
+                          text={SLACK_FR}
+                          selected={is("slack-open") ? n : at("slack-shortcut") ? all : 0}
+                        />
+                      </p>
+                    </div>
+                  </div>
+                  <div className="m-[0.9em] rounded-[0.5em] border border-[#8d8d8d] px-[0.8em] py-[0.5em] text-[0.95em] text-[#616061]">
+                    Message #standup
+                  </div>
                 </div>
               </div>
             </Win>
@@ -481,7 +556,7 @@ export function Demo() {
             </div>
           )}
 
-          <div className="absolute bottom-[9%] left-1/2 flex -translate-x-1/2 gap-[0.3em] rounded-[1em] border border-white/[0.08] bg-card/70 px-[0.35em] pt-[0.35em] pb-[0.15em] backdrop-blur-md">
+          <div className="absolute bottom-[9%] left-1/2 flex -translate-x-1/2 gap-0 rounded-[1.1em] border border-white/[0.08] bg-card/70 px-[0.2em] pt-[0.2em] pb-[0.1em] backdrop-blur-md">
             {DOCK.map(([app, open]) => (
               <span key={app} className="flex flex-col items-center gap-[0.1em]">
                 <Image
@@ -489,7 +564,7 @@ export function Demo() {
                   alt=""
                   width={128}
                   height={128}
-                  className="size-[3.4em]"
+                  className="size-[4.4em]"
                 />
                 {/* macOS running dot */}
                 <i
