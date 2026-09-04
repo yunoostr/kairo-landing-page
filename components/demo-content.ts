@@ -4,19 +4,19 @@
 // for the voice.
 
 export const PLAN =
-  "Migrate session handling from JWT cookies to server-side sessions stored in Redis. The refresh endpoint goes away. `auth/middleware.ts` reads the session id from the cookie and loads the user once per request. Existing tokens stay valid for 24 hours so nobody gets logged out during the rollout."
+  "Migrate session handling from JWT cookies to server-side sessions in Redis. `auth/middleware.ts` loads the user once per request. Old tokens stay valid for 24 hours during the rollout."
 
 export const PR_BODY =
-  "This PR replaces the JWT cookie flow with server-side sessions. Every request used to verify a signed token and, when it was close to expiry, call the refresh endpoint to mint a new pair, which meant two round trips on a cold tab and a race when two tabs refreshed at once. Sessions now live in Redis with a 30-day sliding TTL, the middleware loads the user once per request, and the refresh endpoint is deleted. Old tokens are accepted for 24 hours after deploy so nobody is logged out."
+  "This PR replaces the JWT cookie flow with server-side sessions. Verifying and refreshing tokens on every request meant two round trips on a cold tab and a race between tabs. Sessions now live in Redis with a 30-day sliding TTL, and the refresh endpoint is gone."
 
 export const PR_SUMMARY =
-  "Done: JWT cookies replaced by Redis sessions, refresh endpoint removed. Changed: `auth/middleware.ts`, the session store, login and logout routes, one migration. Left to decide: the 30-day TTL, and whether to keep the 24-hour token grace after the first deploy."
+  "Done: JWT cookies replaced by Redis sessions, refresh endpoint removed. Changed: `auth/middleware.ts`, login and logout routes, one migration. Left to decide: the 30-day TTL."
 
 export const SLACK_FR =
-  "Salut, j'ai relu la PR des sessions ce matin. Le middleware me paraît propre, mais je ne suis pas sûr du TTL de 30 jours : pour les comptes admin on avait dit 7 jours max. Tu peux confirmer avant que je valide ? Sinon je merge cet après-midi."
+  "Salut, j'ai relu la PR des sessions. Le middleware est propre, mais le TTL de 30 jours me gêne : pour les admins on avait dit 7 jours max. Tu confirmes avant que je merge ?"
 
 export const SLACK_EN =
-  "Hi, I reviewed the sessions PR this morning. The middleware looks clean, but I'm not sure about the 30-day TTL: for admin accounts we said 7 days max. Can you confirm before I approve? Otherwise I'll merge this afternoon."
+  "Hi, I reviewed the sessions PR. The middleware is clean, but the 30-day TTL bothers me: for admins we said 7 days max. Can you confirm before I merge?"
 
 export const spoken = (text: string) => text.replaceAll("`", "")
 

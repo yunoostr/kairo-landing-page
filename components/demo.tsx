@@ -2,6 +2,7 @@
 
 import { memo, useEffect, useRef, useState, useSyncExternalStore } from "react"
 import {
+  IconPlayerPauseFilled,
   IconPlayerPlayFilled,
   IconRotateClockwise,
 } from "@tabler/icons-react"
@@ -147,7 +148,11 @@ function Player({
     <div className="absolute top-[6%] right-[4%] flex w-[24%] flex-col gap-[0.5em] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2 motion-safe:duration-300">
       <div className={cn(PILL, "flex h-[2.6em] items-center gap-[0.7em] pr-[0.9em] pl-[0.6em]")}>
         <span className="grid size-[1.4em] place-items-center rounded-full bg-primary text-background">
-          <IconPlayerPlayFilled className="ml-px size-[0.6em]" />
+          {playing ? (
+            <IconPlayerPauseFilled className="size-[0.6em]" />
+          ) : (
+            <IconPlayerPlayFilled className="ml-px size-[0.6em]" />
+          )}
         </span>
         <span className="font-mono text-[0.85em] text-muted-foreground tabular-nums">
           {clock(time)}
@@ -180,6 +185,7 @@ export function Demo() {
   const [s, setS] = useState<{ phase: Phase; n: number }>({ phase: "rest", n: 0 })
   const [current, setCurrent] = useState(-1) // word being read
   const [time, setTime] = useState(0) // player pill clock
+  const [paused, setPaused] = useState(false)
   const audio = useRef<Record<string, HTMLAudioElement | null>>({})
   const sectionRef = useRef<HTMLElement>(null)
   const reduced = useSyncExternalStore(
@@ -187,7 +193,15 @@ export function Demo() {
     () => matchMedia(REDUCED).matches,
     () => false
   )
-  const go = (phase: Phase) => setS({ phase, n: 0 })
+  const go = (phase: Phase) => {
+    setS({ phase, n: 0 })
+    setPaused(false)
+  }
+  const running = !["rest", "end"].includes(s.phase)
+  // Click anywhere on the desk (or Space) pauses and resumes a run.
+  const toggle = () => {
+    if (running) setPaused((x) => !x)
+  }
   const click = () => {
     // Unlock both voices on this user gesture so a later programmatic
     // play() is allowed on WebKit, then load preload="metadata" for real.
@@ -208,10 +222,10 @@ export function Demo() {
   // Streaming and sweeping read from one counter that restarts every phase.
   useEffect(() => {
     const ms = TICK[s.phase]
-    if (!ms) return
+    if (!ms || paused) return
     const id = setInterval(() => setS((x) => ({ ...x, n: x.n + 1 })), ms)
     return () => clearInterval(id)
-  }, [s.phase])
+  }, [s.phase, paused])
 
   // Stop the run when the demo scrolls out of view so it doesn't keep
   // playing audio off-screen.
@@ -232,10 +246,12 @@ export function Demo() {
   // file never plays (blocked, missing) still ends shortly after, and a
   // rejected/erroring play() waits 2 s before moving on so the pill can
   // show briefly rather than skipping the read beat outright.
+  // ponytail: pausing tears the effect down; resuming restarts a timed
+  // phase from its full duration, and audio from where it stopped.
   useEffect(() => {
     const phase = s.phase
     const end = ENDS[phase]
-    if (end === "click") return
+    if (end === "click" || paused) return
     if (typeof end === "number") {
       const id = setTimeout(() => go(advance(phase, "timer")), end)
       return () => clearTimeout(id)
@@ -251,6 +267,7 @@ export function Demo() {
     const done = () => {
       if (fired) return
       fired = true
+      if (el) el.currentTime = 0
       setCurrent(-1)
       setTime(0)
       go(advance(phase, "ended"))
@@ -271,12 +288,9 @@ export function Demo() {
       el?.removeEventListener("timeupdate", onTime)
       el?.removeEventListener("ended", done)
       el?.removeEventListener("error", fail)
-      if (el) {
-        el.pause()
-        el.currentTime = 0
-      }
+      el?.pause()
     }
-  }, [s.phase])
+  }, [s.phase, paused])
 
   // With reduced motion the desk is a still of beat 3.
   const p: Phase = reduced ? "slack-listen" : s.phase
@@ -286,7 +300,7 @@ export function Demo() {
   const is = (...q: Phase[]) => q.includes(p)
   const all = Infinity
 
-  const playing = !reduced && is("claude-read", "slack-listen")
+  const playing = !reduced && !paused && is("claude-read", "slack-listen")
   const lit = reduced ? -1 : current
 
   return (
@@ -294,6 +308,12 @@ export function Demo() {
       id="demo"
       ref={sectionRef}
       tabIndex={-1}
+      onKeyDown={(e) => {
+        if (e.key === " " && running && e.target === e.currentTarget) {
+          e.preventDefault()
+          toggle()
+        }
+      }}
       className="mx-auto max-w-[1160px] px-8 pb-32 outline-none"
     >
       {Object.entries(AUDIO).map(([phase, a]) => (
@@ -318,7 +338,14 @@ export function Demo() {
       </Reveal>
 
       <Reveal delay={80} className="relative mt-16 aspect-[16/10] overflow-hidden border border-border bg-[#0d0d0d] @container">
-        <div aria-hidden className="absolute inset-0 text-[max(7px,1.2cqw)] leading-[1.5]">
+        <div
+          aria-hidden
+          onClick={toggle}
+          className={cn(
+            "absolute inset-0 text-[max(7px,1.2cqw)] leading-[1.5]",
+            running && !reduced && "cursor-pointer"
+          )}
+        >
           <ShaderBackground
             seed={23}
             lines={3}
@@ -460,6 +487,42 @@ export function Demo() {
             ))}
           </div>
         </div>
+
+        {!reduced && running && !paused && (
+          <button
+            type="button"
+            onClick={toggle}
+            className={cn(
+              PILL,
+              "absolute bottom-4 left-4 flex h-8 items-center gap-1.5 px-3 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            )}
+          >
+            <IconPlayerPauseFilled className="size-3" />
+            Pause
+          </button>
+        )}
+
+        {!reduced && running && paused && (
+          <div
+            onClick={toggle}
+            className="absolute inset-0 grid cursor-pointer place-items-center bg-background/40 backdrop-blur-sm"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                toggle()
+              }}
+              className={cn(
+                PILL,
+                "flex h-11 items-center gap-2.5 pr-5 pl-4 text-[15px] font-medium transition-transform hover:scale-[1.03] focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none active:scale-[0.98]"
+              )}
+            >
+              <IconPlayerPlayFilled className="size-3.5" />
+              Resume
+            </button>
+          </div>
+        )}
 
         {!reduced && is("rest", "end") && (
           <div

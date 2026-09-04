@@ -73,6 +73,6 @@ test("every phase has an end and every tick belongs to a phase", () => {
 test("spoken text has no backticks and reads in one breath", () => {
   for (const t of [PLAN, PR_SUMMARY, SLACK_EN]) {
     assert.ok(!spoken(t).includes("`"))
-    assert.ok(spoken(t).split(" ").length < 90)
+    assert.ok(spoken(t).split(" ").length <= 30)
   }
 })
