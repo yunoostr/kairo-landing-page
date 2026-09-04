@@ -3,6 +3,7 @@ import Image from "next/image"
 import { DownloadButton } from "@/components/download-button"
 import { Bento } from "@/components/bento"
 import { ClosingCta } from "@/components/closing-cta"
+import { Dock } from "@/components/dock"
 import { Faq } from "@/components/faq"
 import { Footer } from "@/components/footer"
 import { Hero } from "@/components/hero"
@@ -37,7 +38,10 @@ export default function Home() {
             Get Pro →
           </a>
         </div>
-        <header className="relative z-10 mx-auto flex h-16 max-w-[1160px] items-center justify-between px-8">
+        <header
+          id="top"
+          className="relative z-10 mx-auto flex h-16 max-w-[1160px] items-center justify-between px-8"
+        >
           <a href="#" aria-label="Kairo">
             <Image
               src="/kairo-lockup-dark.png"
@@ -63,6 +67,7 @@ export default function Home() {
         </header>
         <Hero />
       </div>
+      <Dock links={NAV} />
       <Bento />
       <Transform />
       <Pricing />

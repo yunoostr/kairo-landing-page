@@ -23,23 +23,32 @@ const BUILDS = [
 export function DownloadButton({
   className,
   align = "start",
+  side = "bottom",
+  label = "Download for Mac",
 }: {
   className?: string
   align?: "start" | "end"
+  side?: "top" | "bottom"
+  label?: string
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "group cta inline-flex h-10 cursor-pointer items-center gap-2.5 rounded-xl px-4 text-sm font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+          "group inline-flex h-10 cta cursor-pointer items-center gap-2.5 rounded-xl px-4 text-sm font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
           className
         )}
       >
         <IconBrandAppleFilled className="size-4 -translate-y-px" />
-        Download for Mac
+        {label}
         <IconChevronDown className="-mr-1 -ml-0.5 size-3.5 opacity-55 transition-transform group-aria-expanded:rotate-180" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align={align} sideOffset={6} className="min-w-52">
+      <DropdownMenuContent
+        align={align}
+        side={side}
+        sideOffset={6}
+        className="min-w-52"
+      >
         {BUILDS.map((b) => (
           <DropdownMenuItem
             key={b.file}
