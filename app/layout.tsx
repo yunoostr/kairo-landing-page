@@ -3,13 +3,39 @@ import { Caveat } from "next/font/google"
 
 import "./globals.css"
 
+const SITE = "https://kairoagent.io"
+const TITLE = "Kairo — Listen to what your AI agent writes"
+const DESCRIPTION =
+  "Kairo reads any selected text aloud on your Mac from one shortcut, and summarizes, translates or humanizes it on your own OpenAI key. Free to read, pay once for Pro."
+
 // Lets the browser paint the page dark before the stylesheet arrives (no white flash on load).
 export const viewport: Viewport = { colorScheme: "dark" }
 
+// app/opengraph-image.png is picked up by Next as og:image and twitter:image.
 export const metadata: Metadata = {
-  title: "Kairo — Listen to what your AI agent writes",
-  description:
-    "Kairo reads any selected text aloud on your Mac from one shortcut, and summarizes, translates or humanizes it on your own OpenAI key. Free to read, pay once for Pro.",
+  metadataBase: new URL(SITE),
+  title: { default: TITLE, template: "%s · Kairo" },
+  description: DESCRIPTION,
+  // og:title / twitter:title fall back to each page's templated title.
+  openGraph: { type: "website", siteName: "Kairo", locale: "en_US" },
+  twitter: { card: "summary_large_image", site: "@kairoaiagent", creator: "@kairoaiagent" },
+  robots: { index: true, follow: true },
+}
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Kairo",
+  url: SITE,
+  image: `${SITE}/opengraph-image.png`,
+  description: DESCRIPTION,
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "macOS",
+  offers: [
+    { "@type": "Offer", name: "Free", price: "0", priceCurrency: "EUR" },
+    { "@type": "Offer", name: "Pro", price: "19", priceCurrency: "EUR" },
+  ],
+  sameAs: ["https://x.com/kairoaiagent", "https://github.com/nathanrenard3/kairo-releases"],
 }
 
 const hand = Caveat({ subsets: ["latin"], variable: "--font-hand" })
@@ -26,7 +52,13 @@ export default function RootLayout({
       // Lets Next disable smooth scrolling during route transitions.
       data-scroll-behavior="smooth"
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
+      </body>
     </html>
   )
 }

@@ -1,0 +1,40 @@
+<!doctype html>
+<!--
+  Source of app/opengraph-image.png (1200×630).
+  1. node scripts/og-bg.mjs   (grabs a frame of the real hero shader from `next dev` into og-bg.png)
+  2. node scripts/og.mjs      (renders this file over it)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face {
+    font-family: Geist;
+    src: url("../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2");
+    font-weight: 100 900;
+  }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    font-family: Geist, system-ui, sans-serif;
+    color: #fafafa;
+    background: #0a0a0a url("og-bg.png") center / cover no-repeat;
+  }
+  .lockup { position: absolute; top: 72px; left: 80px; height: 52px; width: auto; }
+  .content { position: absolute; inset: 0; padding: 0 80px; display: flex; flex-direction: column; justify-content: center; }
+  h1 {
+    margin: 0; max-width: 980px;
+    font-size: 76px; line-height: 1.04; letter-spacing: -0.035em; font-weight: 500;
+  }
+  h1 .key { text-shadow: 0 0 28px rgba(197,197,197,.55); }
+  .sub { margin: 28px 0 0; font-size: 27px; line-height: 1.35; color: #b4b4b4; max-width: 980px; letter-spacing: -0.01em; font-weight: 400; }
+</style>
+</head>
+<body>
+  <img class="lockup" src="../public/kairo-lockup-dark.png" alt="Kairo" />
+  <div class="content">
+    <h1>Your agent writes faster than you can read. <span class="key">Listen</span> instead.</h1>
+    <p class="sub">Plans, specs, PR reports, long answers. Select the text, hit one shortcut, and Kairo reads it aloud in any app on your Mac.</p>
+  </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
+import type { Metadata } from "next"
 import Image from "next/image"
-import { IconArrowRight } from "@tabler/icons-react"
 
 import { DownloadButton } from "@/components/download-button"
 import { Bento } from "@/components/bento"
@@ -13,6 +13,11 @@ import { Pricing } from "@/components/pricing"
 import { Transform } from "@/components/transform"
 import { ShaderBackground } from "@/components/ui/shader-background"
 
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: { url: "/" },
+}
+
 const NAV = [
   ["Features", "#features"],
   ["Pricing", "#pricing"],
@@ -24,23 +29,6 @@ export default function Home() {
     <main className="overflow-clip">
       <div className="relative overflow-hidden">
         <ShaderBackground className="absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_30%,transparent_95%)]" />
-        {/* Launch offer strip. Delete once the first 50 Pro licenses are sold. */}
-        <div className="relative z-10 flex min-h-9 items-center justify-center gap-3.5 border-b border-border bg-card/70 px-4 py-1.5 text-center text-[13px] leading-snug text-muted-foreground backdrop-blur-sm">
-          <span>
-            <b className="font-medium text-foreground">Launch price.</b>{" "}
-            <span className="hidden sm:inline">
-              Kairo Pro is 19 € instead of 29 € for the first 50 customers.
-            </span>
-            <span className="sm:hidden">Pro at 19 € for the first 50.</span>
-          </span>
-          <a
-            href="#pricing"
-            className="inline-flex items-center gap-1 font-medium whitespace-nowrap text-primary transition-colors hover:text-foreground hover:underline hover:underline-offset-3"
-          >
-            Get Pro
-            <IconArrowRight size={14} stroke={2} aria-hidden />
-          </a>
-        </div>
         <header
           id="top"
           className="relative z-10 mx-auto flex h-16 max-w-[1160px] items-center justify-between px-8"

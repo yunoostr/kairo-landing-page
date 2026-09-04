@@ -1,6 +1,6 @@
 import { IconThumbUp } from "@tabler/icons-react"
 
-export const metadata = { title: "Roadmap - Kairo" }
+export const metadata = { title: "Roadmap", alternates: { canonical: "/roadmap" } }
 
 const REPO = "https://github.com/nathanrenard3/kairo-releases"
 

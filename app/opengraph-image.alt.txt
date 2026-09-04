@@ -1,0 +1,1 @@
+Kairo — Listen to what your AI agent writes. A Mac app that reads selected text aloud from one shortcut.
