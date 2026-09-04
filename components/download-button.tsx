@@ -31,7 +31,7 @@ export function DownloadButton({
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "group inline-flex h-10 cursor-pointer items-center gap-2.5 rounded-xl bg-[linear-gradient(#ffffff,#e4e4e4)] px-4 text-sm font-semibold text-[#0a0a0a] shadow-[inset_0_1px_0_#fff,0_1px_2px_rgba(0,0,0,.5),0_10px_24px_rgba(0,0,0,.35)] transition-[filter] outline-none hover:brightness-[1.03] focus-visible:ring-3 focus-visible:ring-ring/50 active:brightness-95",
+          "group cta inline-flex h-10 cursor-pointer items-center gap-2.5 rounded-xl px-4 text-sm font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
           className
         )}
       >
