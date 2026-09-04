@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { memo, useEffect, useRef, useState, useSyncExternalStore } from "react"
 import {
   IconPlayerPauseFilled,
@@ -29,6 +30,13 @@ const AUDIO: Partial<Record<Phase, { src: string; text: string }>> = {
   "claude-read": { src: "/demo-plan-1.5x.mp3", text: PLAN },
   "slack-listen": { src: "/demo-translate-1.5x.mp3", text: SLACK_EN },
 }
+
+// Dock apps, and the phase from which each one has a window open.
+const DOCK: [string, Phase][] = [
+  ["ghostty", "claude-open"],
+  ["github", "pr-open"],
+  ["slack", "slack-open"],
+]
 
 const PILL =
   "rounded-full bg-card shadow-[0_0_0_1px_#000,inset_0_1px_0_rgba(255,255,255,.08),0_1em_2.5em_rgba(0,0,0,.6)]"
@@ -359,7 +367,7 @@ export function Demo() {
           />
 
           {at("claude-open") && (
-            <Win title="claude — zsh — 120×40" dim={at("pr-open")} className="top-[9%] left-[5%] h-[66%] w-[58%]">
+            <Win title="claude — Ghostty" dim={at("pr-open")} className="top-[9%] left-[5%] h-[66%] w-[58%]">
               <div className="p-[1em] font-mono text-muted-foreground">
                 <p className="opacity-60">❯ claude</p>
                 <p className="opacity-60">⏺ Plan ready. Here is what I will do:</p>
@@ -383,7 +391,7 @@ export function Demo() {
           )}
 
           {at("pr-open") && (
-            <Win title="Pull request #482 · Refactor auth to server sessions" dim={at("slack-open")} className="top-[20%] left-[38%] h-[66%] w-[56%]">
+            <Win title="Pull request #482 · GitHub" dim={at("slack-open")} className="top-[20%] left-[38%] h-[66%] w-[56%]">
               <div className="p-[1.1em] text-muted-foreground">
                 <p className="mb-[0.6em] font-medium text-foreground">
                   Refactor auth to server sessions
@@ -400,7 +408,7 @@ export function Demo() {
           )}
 
           {at("slack-open") && (
-            <Win title="#standup" className="top-[30%] left-[18%] h-[60%] w-[52%]">
+            <Win title="#standup · Slack" className="top-[30%] left-[18%] h-[60%] w-[52%]">
               <div className="grid h-full grid-cols-[30%_1fr]">
                 <div className="border-r border-border p-[0.9em] text-[0.9em] leading-[2] text-muted-foreground">
                   <p># announcements</p>
@@ -473,16 +481,23 @@ export function Demo() {
             </div>
           )}
 
-          <div className="absolute bottom-[9%] left-1/2 flex -translate-x-1/2 gap-[0.6em] rounded-[1em] border border-white/[0.08] bg-card/70 p-[0.45em] backdrop-blur-md">
-            {["❯", "⎇", "#", "K"].map((g) => (
-              <span
-                key={g}
-                className={cn(
-                  "grid size-[2.6em] place-items-center rounded-[0.7em] bg-secondary font-mono text-[1.1em] shadow-[inset_0_1px_0_rgba(255,255,255,.1)]",
-                  g === "K" && "bg-linear-to-b from-[#2b2b2b] to-[#1a1a1a] font-sans font-semibold"
-                )}
-              >
-                {g}
+          <div className="absolute bottom-[9%] left-1/2 flex -translate-x-1/2 gap-[0.3em] rounded-[1em] border border-white/[0.08] bg-card/70 px-[0.35em] pt-[0.35em] pb-[0.15em] backdrop-blur-md">
+            {DOCK.map(([app, open]) => (
+              <span key={app} className="flex flex-col items-center gap-[0.1em]">
+                <Image
+                  src={`/dock-${app}.webp`}
+                  alt=""
+                  width={128}
+                  height={128}
+                  className="size-[3.4em]"
+                />
+                {/* macOS running dot */}
+                <i
+                  className={cn(
+                    "block size-[0.28em] rounded-full bg-muted-foreground transition-opacity",
+                    at(open) ? "opacity-100" : "opacity-0"
+                  )}
+                />
               </span>
             ))}
           </div>

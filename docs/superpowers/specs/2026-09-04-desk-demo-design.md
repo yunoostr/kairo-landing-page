@@ -50,8 +50,11 @@ All achromatic, all from the DESIGN.md tokens.
     a PR description.
   - `#standup`: a thin channel list on the left, a message from a colleague
     on the right.
-- **Dock**: bottom center, `bg-card/70` with `backdrop-blur`, four 34px
-  tiles in `bg-secondary`: `❯`, `⎇`, `#`, and a `K` keycap-styled tile.
+- **Dock**: bottom center, `bg-card/70` with `backdrop-blur`, the three
+  real app icons (`public/dock-{ghostty,github,slack}.webp`, 128px, ~2 KB
+  each, composed from the marks Nathan supplied on 2026-09-04) with a
+  macOS running dot under each app whose window is open. Windows are
+  titled `claude — Ghostty`, `Pull request #482 · GitHub`, `#standup · Slack`.
 - **Kairo player**: top right. A pill (`rounded-full`, `bg-card`, the nav
   pill's material) with play button, elapsed time, speed `1×`, and three
   EQ bars that bounce while audio plays (reuse the hero's `eq` keyframes).
