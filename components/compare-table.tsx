@@ -1,5 +1,12 @@
+import {
+  IconCalendar,
+  IconCheck,
+  IconClock,
+  IconMinus,
+  IconUser,
+} from "@tabler/icons-react"
+
 import { CRITERIA, type Product } from "@/lib/compare"
-import { cn } from "@/lib/utils"
 
 export function checkedOn(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", {
@@ -9,8 +16,37 @@ export function checkedOn(iso: string) {
   })
 }
 
-// Same eight rows for every product. No image slot on purpose: competitor
-// names stay plain text (nominative use only).
+// Date, author, reading time under the page title.
+export function Byline({ date, minutes }: { date: string; minutes: number }) {
+  const items = [
+    [IconCalendar, checkedOn(date)],
+    [IconUser, "Nathan Renard"],
+    [IconClock, `${minutes} min read`],
+  ] as const
+  return (
+    <div className="mt-3.5 flex flex-wrap items-center gap-x-5.5 gap-y-2 text-[13px] text-muted-foreground">
+      {items.map(([Icon, text]) => (
+        <span
+          key={text}
+          className="inline-flex items-center gap-2 whitespace-nowrap"
+        >
+          <Icon className="size-4" />
+          {text}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+function Value({ v }: { v: string }) {
+  if (v === "Yes") return <IconCheck className="size-4 text-primary" />
+  if (v === "No" || v === "None")
+    return <IconMinus className="size-4 text-muted-foreground/60" />
+  return <>{v}</>
+}
+
+// One short value per cell, no notes, no links. Sources collapse to one line
+// under the table. No image slot on purpose: competitor names stay plain text.
 export function CompareTable({ products }: { products: Product[] }) {
   for (const p of products)
     if (Number.isNaN(Date.parse(p.checked)))
@@ -19,75 +55,46 @@ export function CompareTable({ products }: { products: Product[] }) {
     .map((p) => p.checked)
     .sort()
     .at(-1)!
+  const hosts = [
+    ...new Set(
+      products
+        .filter((p) => p.slug !== "kairo")
+        .flatMap((p) => Object.values(p.facts))
+        .flatMap((c) =>
+          c.source ? [new URL(c.source).hostname.replace(/^www\./, "")] : []
+        )
+    ),
+  ]
+  const cols = {
+    gridTemplateColumns: `repeat(${products.length + 1}, minmax(0, 1fr))`,
+  }
   return (
-    // Breaks out of the 680px column: 860px, and 1160px (the footer width)
-    // when the hub shows more than three products.
-    <div
-      className={cn(
-        "my-8 sm:-mx-[90px]",
-        products.length > 3 && "xl:-mx-[240px]"
-      )}
-    >
-      <p className="mb-3 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
-        Facts checked on {checkedOn(latest)}
-      </p>
-      <div className="overflow-x-auto rounded-xl border border-border">
-        <table className="w-full min-w-[640px] border-collapse text-sm">
-          <thead>
-            <tr className="border-b border-border">
-              <th className="p-3 text-left font-medium text-muted-foreground" />
-              {products.map((p) => (
-                <th
-                  key={p.slug}
-                  className="p-3 text-left font-medium text-foreground"
-                >
-                  <a
-                    href={p.url}
-                    rel="nofollow noopener"
-                    className="hover:underline"
-                  >
-                    {p.name}
-                  </a>
-                  <div className="mt-0.5 text-xs font-normal text-muted-foreground">
-                    {p.vendor}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {CRITERIA.map((c) => (
-              <tr key={c.key} className="border-b border-border last:border-0">
-                <th className="p-3 text-left align-top font-medium text-muted-foreground">
-                  {c.label}
-                </th>
-                {products.map((p) => {
-                  const cell = p.facts[c.key]
-                  return (
-                    <td key={p.slug} className="p-3 align-top text-foreground">
-                      {cell.value}
-                      {cell.note && (
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {cell.note}
-                        </div>
-                      )}
-                      {cell.source && (
-                        <a
-                          href={cell.source}
-                          rel="nofollow noopener"
-                          className="mt-1 block text-xs text-muted-foreground underline decoration-border underline-offset-4 hover:decoration-foreground"
-                        >
-                          source
-                        </a>
-                      )}
-                    </td>
-                  )
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="my-10">
+      <div className="grid gap-4 border-b border-border pb-3" style={cols}>
+        <div />
+        {products.map((p) => (
+          <div key={p.slug} className="text-sm font-medium text-foreground">
+            {p.name}
+          </div>
+        ))}
       </div>
+      {CRITERIA.map((c) => (
+        <div
+          key={c.key}
+          className="grid items-center gap-4 border-b border-border py-3.5 text-sm"
+          style={cols}
+        >
+          <div className="text-muted-foreground">{c.label}</div>
+          {products.map((p) => (
+            <div key={p.slug} className="flex items-center text-foreground">
+              <Value v={p.facts[c.key].value} />
+            </div>
+          ))}
+        </div>
+      ))}
+      <p className="mt-4 font-mono text-xs text-muted-foreground">
+        Sources: {hosts.join(", ")}, checked {checkedOn(latest)}
+      </p>
     </div>
   )
 }

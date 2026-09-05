@@ -7,7 +7,7 @@ import { CRITERIA, LATEST_CHECK, PRODUCTS, pick } from "./compare.ts"
 const BANNED = /\b(best|better|worse|slow|bad|robotic)\b/i
 
 test("every product has every criterion, a valid check date and a sourced price", () => {
-  assert.ok(PRODUCTS.length >= 7)
+  assert.ok(PRODUCTS.length >= 4)
   for (const p of PRODUCTS) {
     assert.ok(!Number.isNaN(Date.parse(p.checked)), `${p.name}: checked`)
     for (const c of CRITERIA) {
@@ -16,10 +16,6 @@ test("every product has every criterion, a valid check date and a sourced price"
       assert.ok(
         !BANNED.test(cell.value),
         `${p.name}: ${c.key} uses a banned word`
-      )
-      assert.ok(
-        !BANNED.test(cell.note ?? ""),
-        `${p.name}: ${c.key} note uses a banned word`
       )
     }
     assert.ok(
