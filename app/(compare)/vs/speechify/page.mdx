@@ -1,0 +1,50 @@
+import { DownloadButton } from "@/components/download-button"
+import { CompareDisclaimer, CompareTable } from "@/components/compare-table"
+import { pick } from "@/lib/compare"
+
+export const metadata = {
+  title: "Kairo vs Speechify",
+  description:
+    "Both read selected text in any Mac app from a shortcut. One is a subscription platform across devices, the other a one-time Mac license on your own OpenAI key.",
+  alternates: { canonical: "/vs/speechify" },
+}
+
+# Kairo vs Speechify
+
+**In short:** Speechify is a multi-device reading platform on a subscription, with a Mac app that reads selected text in any app, a document library, its own voices and AI summaries. Kairo is a Mac-only utility that does the selected-text part with a one-time license, then adds Humanize, Translate and Summarize on your own OpenAI key. If you need iOS, Windows or a library, Speechify. If you read on one Mac and want to pay once, Kairo.
+
+<CompareTable products={pick("speechify", "kairo")} />
+
+## Where it reads
+
+Both apps do the same core gesture on a Mac: select text in any app, press a shortcut (Option-A by default in both), and a small player reads it with word highlighting. Speechify goes further by also being a library: you import PDFs, scan a book with Scan and Listen, and continue on your phone. Kairo has no library and no other device. It reads what is on your screen right now and keeps a history of the last fifty readings for replay.
+
+## How you pay
+
+Speechify's free tier gives ten voices, a 1.5x speed cap and five files. Premium is $29 a month or $139 a year, with a guaranteed 150,000 words a month of premium voices. Kairo's free tier is the macOS voices with no cap. Kairo Pro is a one-time license, then OpenAI bills your own key: a cent or two per minute of audio, a fraction of a cent per Humanize, Translate or Summarize. Heavy listeners should do the sum. At an hour of OpenAI audio every day, the API alone runs to roughly $25 a month, which is more than Speechify's annual plan spread over a year. At a few minutes a day it stays in cents, and the license never renews.
+
+## What each cannot do
+
+Speechify has no translate action, and its rewriting is a chat, not a fixed button. Kairo has no iOS, Android or Windows app, no browser extension, no PDF or book import, no AI podcasts, and its Pro features need an OpenAI account and key. Kairo's voices are the nine OpenAI voices; Speechify's Premium catalogue is over a thousand.
+
+## Choose Speechify if
+
+- You listen on a phone or a Windows PC as well as a Mac.
+- You want a library of documents and books that syncs across devices.
+- You want a large voice catalogue and do not want to manage an API key.
+- You want AI podcasts or a chat about the document.
+
+## Choose Kairo if
+
+- You read on one Mac and want to pay once, with no renewal.
+- You mostly read AI-assistant output, chat answers and pull requests, not books.
+- You want Humanize, Translate or Summarize as one-press actions before listening.
+- You already have an OpenAI key and prefer paying cents per use.
+
+See also [Kairo vs NaturalReader](/vs/naturalreader), [Kairo vs ElevenReader](/vs/elevenreader) and the full list of [Speechify alternatives for Mac](/speechify-alternatives).
+
+<div className="mt-8">
+  <DownloadButton />
+</div>
+
+<CompareDisclaimer names={["Speechify"]} />

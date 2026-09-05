@@ -1,0 +1,50 @@
+import { DownloadButton } from "@/components/download-button"
+import { CompareDisclaimer, CompareTable } from "@/components/compare-table"
+import { pick } from "@/lib/compare"
+
+export const metadata = {
+  title: "Kairo vs ElevenReader",
+  description:
+    "ElevenReader is ElevenLabs' reading app for phone and web with a free 10-hour tier. Kairo is a Mac utility that reads selected text in any app, licensed once.",
+  alternates: { canonical: "/vs/elevenreader" },
+}
+
+# Kairo vs ElevenReader
+
+**In short:** ElevenReader is a reading app for iOS, Android and the web, built around ElevenLabs voices, with ten free hours a month and an Ultra plan at $99 a year. Kairo is a Mac-only utility that reads text selected in any app from a shortcut, free with the macOS voices, with a one-time license for OpenAI voices and AI actions. They are built for different places: ElevenReader for a phone and a library, Kairo for a Mac and whatever is on screen.
+
+<CompareTable products={pick("elevenreader", "kairo")} />
+
+## Where it reads
+
+ElevenReader has no Mac app. On a Mac you use elevenreader.io in a browser, and content gets there by writing, pasting, uploading a file or importing a page with the Chrome extension. Nothing reads text selected in another app. Kairo runs on the Mac and reads the selection in any app through a floating player with word highlighting. Kairo has no phone app and no library to sync.
+
+## How you pay
+
+ElevenReader's free plan includes ten hours of text-to-audio a month across more than a thousand voices. Ultra is $11 a month or $99 a year and adds unlimited listening, offline downloads and custom voices. Kairo's free tier has no cap on the macOS voices. Kairo Pro is a one-time license, then OpenAI bills your own key, a cent or two per minute of audio. Ten free hours a month is generous: if that covers you and you listen on a phone, ElevenReader costs nothing.
+
+## What each cannot do
+
+ElevenReader has no text actions: no summarize, translate or rewrite. Its highlighting exists but the vendor does not document whether it is per word. Kairo has no iOS or Android app, no browser extension, no document import, no voice cloning, and its Pro features need an OpenAI key. Kairo's voices are the nine OpenAI voices; ElevenReader's catalogue is over a thousand.
+
+## Choose ElevenReader if
+
+- You listen on a phone, and ten hours a month is enough.
+- Voice variety matters most and you want to pick from a large catalogue.
+- You read books and long articles you can import once and keep.
+- You want offline downloads on a phone.
+
+## Choose Kairo if
+
+- You want a shortcut that reads selected text in any Mac app.
+- You want to pay once and keep your text on your own OpenAI account.
+- You want Humanize, Translate or Summarize as fixed actions before listening.
+- You want word-by-word highlighting over the app you are reading in.
+
+See also [Kairo vs Speechify](/vs/speechify), [Kairo vs NaturalReader](/vs/naturalreader) and the full list of [Speechify alternatives for Mac](/speechify-alternatives).
+
+<div className="mt-8">
+  <DownloadButton />
+</div>
+
+<CompareDisclaimer names={["ElevenReader", "ElevenLabs"]} />

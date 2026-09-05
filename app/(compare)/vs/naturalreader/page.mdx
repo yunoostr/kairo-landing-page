@@ -1,0 +1,50 @@
+import { DownloadButton } from "@/components/download-button"
+import { CompareDisclaimer, CompareTable } from "@/components/compare-table"
+import { pick } from "@/lib/compare"
+
+export const metadata = {
+  title: "Kairo vs NaturalReader",
+  description:
+    "NaturalReader is a web app, mobile apps and a Chrome extension on a subscription. Kairo is a Mac utility that reads selected text in any app, licensed once.",
+  alternates: { canonical: "/vs/naturalreader" },
+}
+
+# Kairo vs NaturalReader
+
+**In short:** NaturalReader is a reading service you use in a browser, on a phone or through a Chrome extension, with voices in more than ninety languages and a subscription from $79 a year. Kairo is a native Mac utility that reads text selected in any app from a shortcut, free with the macOS voices, with a one-time license for OpenAI voices and AI actions. They overlap on reading web pages and little else.
+
+<CompareTable products={pick("naturalreader", "kairo")} />
+
+## Where it reads
+
+NaturalReader reads what you bring to it: paste into the web app, upload a document, open the mobile app, or select text on a web page with the Chrome extension. Its standalone desktop app is no longer sold. On a Mac, nothing reads text selected in a desktop app outside the browser. Kairo does exactly that, in any app, including terminals, editors and fullscreen apps, through a floating player. Kairo does not read PDFs or documents you have not opened on screen.
+
+## How you pay
+
+NaturalReader has a free tier and three personal plans: Lite at $13.90 a month or $79 a year, Plus at $20.90 or $119, Pro at $25.90 or $159. Kairo's free tier has no cap on the macOS voices. Kairo Pro is a one-time license, after which OpenAI bills your own key, cents per use. If you listen for hours every day the API cost adds up; if you listen to answers and pull requests, it stays in cents a month.
+
+## What each cannot do
+
+NaturalReader offers AI podcasts, recaps, chat and quizzes but no one-press translate or rewrite of selected text, and no system-wide shortcut on a Mac. Kairo offers no iOS or Android app, no browser extension, no document import, no voice cloning, and its Pro features need an OpenAI key. NaturalReader's voice catalogue spans more than ninety languages; Kairo's OpenAI voices speak the languages OpenAI's text-to-speech supports.
+
+## Choose NaturalReader if
+
+- You read on a phone or tablet as much as on a Mac.
+- You want a large multilingual voice catalogue without managing an API key.
+- You want AI podcasts or quizzes from your documents.
+- You mainly read web pages and uploaded files.
+
+## Choose Kairo if
+
+- You want a shortcut that reads selected text in any Mac app, not only the browser.
+- You want to pay once.
+- You want Humanize, Translate or Summarize as fixed actions before listening.
+- You would rather your text went to your own OpenAI account than to a reading service.
+
+See also [Kairo vs Speechify](/vs/speechify), [Kairo vs ElevenReader](/vs/elevenreader) and the full list of [Speechify alternatives for Mac](/speechify-alternatives).
+
+<div className="mt-8">
+  <DownloadButton />
+</div>
+
+<CompareDisclaimer names={["NaturalReader"]} />
