@@ -15,7 +15,7 @@ export const viewport: Viewport = { colorScheme: "dark" }
 // app/opengraph-image.png is picked up by Next as og:image and twitter:image.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: { default: TITLE, template: "%s · Kairo" },
+  title: { default: TITLE, template: "%s - Kairo" },
   description: DESCRIPTION,
   // og:title / twitter:title fall back to each page's templated title.
   openGraph: { type: "website", siteName: "Kairo", locale: "en_US" },

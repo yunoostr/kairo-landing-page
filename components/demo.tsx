@@ -401,7 +401,7 @@ export function Demo() {
 
           {at("pr-open") && (
             <Win
-              title="Refactor auth to server sessions · Pull Request #482 · GitHub"
+              title="Refactor auth to server sessions - Pull Request #482 - GitHub"
               dim={at("slack-open")}
               className="top-[20%] left-[38%] h-[66%] w-[56%] bg-[#0d1117] text-[#e6edf3]"
               bar="border-[#30363d] bg-[#010409] text-[#8b949e]"
@@ -455,7 +455,7 @@ export function Demo() {
 
           {at("slack-open") && (
             <Win
-              title="#standup · Kairo · Slack"
+              title="#standup - Kairo - Slack"
               className="top-[25%] left-[18%] h-[57%] w-[52%] bg-white text-[#1d1c1d]"
               bar="border-[#3f0e40] bg-[#4a154b] text-[#e9d5ea]"
             >
