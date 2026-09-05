@@ -27,7 +27,6 @@ const COLUMNS: {
   {
     title: "Compare",
     links: [
-      { l: "Speechify alternatives", href: "/speechify-alternatives" },
       { l: "Kairo vs Speechify", href: "/vs/speechify" },
       { l: "Kairo vs NaturalReader", href: "/vs/naturalreader" },
       { l: "Kairo vs ElevenReader", href: "/vs/elevenreader" },

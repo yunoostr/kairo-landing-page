@@ -3,7 +3,6 @@ import type { MetadataRoute } from "next"
 import { LATEST_CHECK } from "@/lib/compare"
 
 const COMPARE = [
-  "/speechify-alternatives",
   "/vs/speechify",
   "/vs/naturalreader",
   "/vs/elevenreader",

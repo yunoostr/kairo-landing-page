@@ -1,4 +1,4 @@
-import { CRITERIA, LATEST_CHECK, type Product } from "@/lib/compare"
+import { CRITERIA, type Product } from "@/lib/compare"
 import { cn } from "@/lib/utils"
 
 export function checkedOn(iso: string) {
@@ -89,26 +89,5 @@ export function CompareTable({ products }: { products: Product[] }) {
         </table>
       </div>
     </div>
-  )
-}
-
-export function CompareDisclaimer({ names }: { names: string[] }) {
-  return (
-    <p className="mt-12 border-t border-border pt-6 text-xs leading-relaxed text-muted-foreground">
-      {names.join(", ")}{" "}
-      {names.length > 1 ? "are trademarks" : "is a trademark"} of{" "}
-      {names.length > 1 ? "their respective owners" : "its owner"}. Kairo is not
-      affiliated with, endorsed by or sponsored by{" "}
-      {names.length > 1 ? "them" : "it"}. Facts on this page were checked on{" "}
-      {checkedOn(LATEST_CHECK)} against the sources linked in the table and may
-      have changed since. Spotted an error? Write to{" "}
-      <a
-        href="mailto:contact@kairoagent.io"
-        className="underline underline-offset-4"
-      >
-        contact@kairoagent.io
-      </a>{" "}
-      and it will be corrected.
-    </p>
   )
 }
