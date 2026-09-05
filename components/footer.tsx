@@ -24,6 +24,15 @@ const COLUMNS: {
       { l: "Privacy Policy", href: "/privacy" },
     ],
   },
+  {
+    title: "Compare",
+    links: [
+      { l: "Speechify alternatives", href: "/speechify-alternatives" },
+      { l: "Kairo vs Speechify", href: "/vs/speechify" },
+      { l: "Kairo vs NaturalReader", href: "/vs/naturalreader" },
+      { l: "Kairo vs ElevenReader", href: "/vs/elevenreader" },
+    ],
+  },
 ]
 
 export function Footer() {
@@ -53,7 +62,7 @@ export function Footer() {
             <IconBrandX className="size-[18px]" />
           </a>
         </div>
-        <div className="mt-11 grid grid-cols-2 gap-10 sm:grid-cols-[repeat(2,minmax(0,180px))]">
+        <div className="mt-11 grid grid-cols-2 gap-10 sm:grid-cols-[repeat(3,minmax(0,200px))]">
           {COLUMNS.map((c) => (
             <div key={c.title}>
               <div className="mb-3.5 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">

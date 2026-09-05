@@ -1,7 +1,23 @@
 import type { MetadataRoute } from "next"
 
+import { LATEST_CHECK } from "@/lib/compare"
+
+const COMPARE = [
+  "/speechify-alternatives",
+  "/vs/speechify",
+  "/vs/naturalreader",
+  "/vs/elevenreader",
+]
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ["/", "/roadmap", "/changelog"].map(
-    (path) => ({ url: `https://kairoagent.io${path}` })
-  )
+  const base = "https://kairoagent.io"
+  return [
+    ...["/", "/roadmap", "/changelog"].map((path) => ({
+      url: `${base}${path}`,
+    })),
+    ...COMPARE.map((path) => ({
+      url: `${base}${path}`,
+      lastModified: new Date(LATEST_CHECK),
+    })),
+  ]
 }
