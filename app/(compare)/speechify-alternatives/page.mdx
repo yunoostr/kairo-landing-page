@@ -1,0 +1,92 @@
+import { DownloadButton } from "@/components/download-button"
+import { CompareDisclaimer, CompareTable } from "@/components/compare-table"
+import { pick } from "@/lib/compare"
+
+export const metadata = {
+  title: "Speechify alternatives for Mac (2026)",
+  description:
+    "Seven ways to read text aloud on a Mac, from the free Spoken Content built into macOS to one-time and subscription apps. Facts checked and sourced.",
+  alternates: { canonical: "/speechify-alternatives" },
+}
+
+# Speechify alternatives for Mac (2026)
+
+Speechify is a text-to-speech platform: a Mac app, mobile apps, browser extensions and a web library, with a free tier and a Premium subscription at $139 a year. People look for an alternative when their needs are narrower than that. You may want to pay once rather than subscribe, read in any Mac app rather than through one browser or one library, keep your text off a third-party account, or run entirely on voices that live on your machine.
+
+This page lists seven options, Kairo included, with the same eight facts for each. Nothing here is a rating. Where a fact could not be verified on the vendor's site, the cell says "Not documented".
+
+## What to look for
+
+- **Where it reads.** Some tools read the text you select in any Mac app. Others need you to paste, upload or import first.
+- **Highlighting.** Word-by-word highlighting lets you re-read a sentence the moment the voice loses you. Sentence-level is enough for long articles.
+- **Whose voices.** Apple's voices are free and offline. Cloud voices sound more natural and either come with a subscription or run on your own API key.
+- **How you pay.** Free, one-time, or monthly. With bring-your-own-key tools the vendor charges once and the AI provider bills you cents per use.
+- **What else it does.** Summaries, translation or rewriting before you listen. Most read-aloud tools do none of this.
+
+<CompareTable
+  products={pick(
+    "kairo",
+    "spoken-content",
+    "loudscript",
+    "speech-central",
+    "elevenreader",
+    "naturalreader",
+    "voice-dream"
+  )}
+/>
+
+## The options, one by one
+
+### Kairo
+
+A macOS utility with one job: select text anywhere, press a shortcut, and a floating player reads it with word-by-word highlighting. The free version uses the macOS voices. Kairo Pro is a one-time license that unlocks nine OpenAI voices and three fixed actions, Humanize, Translate and Summarize, on your own OpenAI key. There is no iOS app, no browser extension and no document import. If you read a lot of AI-assistant output on a Mac and want to pay once, this is what it is built for.
+
+### macOS Spoken Content
+
+Already on your Mac, free, offline. Turn it on in System Settings under Accessibility, select text in any app and press Option-Esc. It highlights words or sentences in place and offers a small controller for speed. The voices are Apple's, and there is no player window, transcript or AI. Try this first. If it is enough, you do not need anything below.
+
+### LoudScript
+
+A free Mac app that reads selected text from any app through a Services shortcut into a floating player, with sentence highlighting. Its distinguishing feature is local neural voices (Supertonic, Kokoro, PocketTTS) that need no account and no key. It also reads PDFs and screenshots through OCR. Requires macOS 15.6 or later and does not summarize or translate.
+
+### Speech Central
+
+A document reader sold once on the Mac App Store, with a free version for VoiceOver users. It reads selected text through the macOS Services shortcut into its own library, and supports offline Piper voices plus cloud voices on your own Azure, OpenAI, Google or xAI key. It exists on iOS, Android, Windows and Apple Watch, which none of the other Mac-first tools here do.
+
+### ElevenReader
+
+ElevenLabs' reading app for iOS, Android and the web, with a Chrome extension that imports pages. There is no Mac app and no way to read text selected in another app: content is written, pasted, uploaded or imported. The free plan gives ten hours of audio a month; Ultra removes the cap and adds offline downloads. If voice quality is the only thing that matters and you mostly listen on a phone, this is the one to try.
+
+### NaturalReader
+
+A web app, mobile apps and a Chrome extension, with word and sentence highlighting and voices in more than ninety languages. The standalone desktop app is no longer sold. Plans run from a free tier to Pro at $159 a year and add AI podcasts, recaps and quizzes. Nothing reads text selected in a desktop app outside the browser.
+
+### Voice Dream Reader
+
+A long-running library reader for Mac, iOS, iPadOS and visionOS. You import PDFs, EPUBs and web pages, and it reads them with word highlighting and Apple voices, offline. It does not read text selected in other apps. Pricing is a subscription, from $49.99 a year, with premium voices as in-app purchases. Its strength is long documents, not chat output.
+
+## Which one should you pick
+
+- **You want zero cost and zero setup:** macOS Spoken Content.
+- **You want natural voices with no account and no key, for free:** LoudScript.
+- **You want one purchase that also works on your phone and Windows PC:** Speech Central.
+- **You read long PDFs and books:** Voice Dream Reader, or ElevenReader if you listen on a phone.
+- **You read AI output in any Mac app, with word highlighting, and want to Humanize, Translate or Summarize it without a subscription:** Kairo.
+
+Want the detail on one match-up? See [Kairo vs Speechify](/vs/speechify), [Kairo vs NaturalReader](/vs/naturalreader) and [Kairo vs ElevenReader](/vs/elevenreader).
+
+<div className="mt-8">
+  <DownloadButton />
+</div>
+
+<CompareDisclaimer
+  names={[
+    "Speechify",
+    "LoudScript",
+    "Speech Central",
+    "ElevenReader",
+    "NaturalReader",
+    "Voice Dream Reader",
+    "macOS",
+  ]}
+/>
