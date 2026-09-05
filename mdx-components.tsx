@@ -15,6 +15,9 @@ export function useMDXComponents(): MDXComponents {
         {...p}
       />
     ),
+    h3: (p) => (
+      <h3 className="mt-8 mb-2 text-base font-medium text-foreground" {...p} />
+    ),
     p: (p) => (
       <p className="my-4 leading-relaxed text-muted-foreground" {...p} />
     ),
