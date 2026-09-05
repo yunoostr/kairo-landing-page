@@ -1,4 +1,5 @@
 import { CRITERIA, LATEST_CHECK, type Product } from "@/lib/compare"
+import { cn } from "@/lib/utils"
 
 export function checkedOn(iso: string) {
   return new Date(iso).toLocaleDateString("en-GB", {
@@ -19,7 +20,14 @@ export function CompareTable({ products }: { products: Product[] }) {
     .sort()
     .at(-1)!
   return (
-    <div className="my-8 sm:-mx-[90px]">
+    // Breaks out of the 680px column: 860px, and 1160px (the footer width)
+    // when the hub shows more than three products.
+    <div
+      className={cn(
+        "my-8 sm:-mx-[90px]",
+        products.length > 3 && "xl:-mx-[240px]"
+      )}
+    >
       <p className="mb-3 font-mono text-xs tracking-[0.12em] text-muted-foreground uppercase">
         Facts checked on {checkedOn(latest)}
       </p>
