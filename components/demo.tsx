@@ -25,10 +25,11 @@ import { ShaderBackground } from "@/components/ui/shader-background"
 import { cn } from "@/lib/utils"
 import { wordEnds } from "@/lib/word-ends"
 
-// Which phases play a file, and the words the lamp follows meanwhile.
+// OpenAI gpt-4o-mini-tts / Marin, generated at speed=2 with a warm,
+// conversational delivery. The files already include the speed adjustment.
 const AUDIO: Partial<Record<Phase, { src: string; text: string }>> = {
-  "claude-read": { src: "/demo-plan-1.5x.mp3", text: PLAN },
-  "slack-listen": { src: "/demo-translate-1.5x.mp3", text: SLACK_EN },
+  "claude-read": { src: "/demo-plan-marin-2x.mp3", text: PLAN },
+  "slack-listen": { src: "/demo-translate-marin-2x.mp3", text: SLACK_EN },
 }
 
 // Dock apps, and the phase from which each one has a window open.
@@ -178,7 +179,7 @@ function Player({
         <span className="font-mono text-[0.85em] text-muted-foreground tabular-nums">
           {clock(time)}
         </span>
-        <span className="font-mono text-[0.85em] text-muted-foreground">1.5×</span>
+        <span className="font-mono text-[0.85em] text-muted-foreground">2×</span>
         <span aria-hidden className="ml-auto flex h-[10px] items-end gap-[2px]">
           {[0, 1, 2].map((i) => (
             <i
@@ -280,13 +281,12 @@ export function Demo() {
     const el = audio.current[phase]
     const ends = wordEnds(AUDIO[phase]!.text.split(" "))
     let fired = false
-    // The lamp is sampled every frame, not on `timeupdate` (4 Hz, up to a
-    // word behind at 1.5x). ponytail: +120 ms of lead covers the silence the
-    // TTS files open with; tune it if a voice is regenerated.
+    // Sample each frame so the lamp keeps up at 2×. These recordings start
+    // speaking immediately, so no lead offset is needed.
     let raf = 0
     const onTime = () => {
       if (!el) return
-      setCurrent(ends.findIndex((e) => (el.currentTime + 0.12) / (el.duration || 1) < e))
+      setCurrent(ends.findIndex((e) => el.currentTime / (el.duration || 1) < e))
       setTime(Math.floor(el.currentTime))
       raf = requestAnimationFrame(onTime)
     }
