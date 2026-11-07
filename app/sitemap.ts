@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next"
 
 import { LATEST_CHECK } from "@/lib/compare"
 
+export const dynamic = "force-static"
+
 const COMPARE = [
   "/vs/speechify",
   "/vs/naturalreader",

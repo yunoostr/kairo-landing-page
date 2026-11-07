@@ -2,7 +2,7 @@ import { IconThumbUp } from "@tabler/icons-react"
 
 export const metadata = { title: "Roadmap", alternates: { canonical: "/roadmap" } }
 
-const REPO = "https://github.com/nathanrenard3/kairo-releases"
+const REPO = "https://github.com/yunoostr/kairo-releases"
 
 type Issue = {
   id: number
@@ -25,13 +25,18 @@ function statusOf(i: Issue): Status {
   return i.labels.some((l) => l.name === "in progress") ? "progress" : "planned"
 }
 
-// Anonymous quota is 60 req/h; the hourly cache keeps us far under it.
+// Fetched at build time; the daily deploy workflow keeps it fresh.
 async function getIssues(): Promise<Issue[] | null> {
   const res = await fetch(
-    `https://api.github.com/repos/nathanrenard3/kairo-releases/issues?state=all&per_page=100`,
+    `https://api.github.com/repos/yunoostr/kairo-releases/issues?state=all&per_page=100`,
     {
-      headers: { Accept: "application/vnd.github+json" },
-      next: { revalidate: 3600 },
+      headers: {
+        Accept: "application/vnd.github+json",
+        // Set in CI: runners share IPs, so the anonymous quota is often gone.
+        ...(process.env.GITHUB_TOKEN && {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        }),
+      },
     }
   )
   if (!res.ok) return null
