@@ -36,7 +36,7 @@ const JSON_LD = {
     { "@type": "Offer", name: "Free", price: "0", priceCurrency: "EUR" },
     { "@type": "Offer", name: "Pro", price: "19", priceCurrency: "EUR" },
   ],
-  sameAs: ["https://x.com/kairoaiagent", "https://github.com/nathanrenard3/kairo-releases"],
+  sameAs: ["https://x.com/kairoaiagent", "https://github.com/yunoostr/kairo-releases"],
 }
 
 const hand = Caveat({ subsets: ["latin"], variable: "--font-hand" })

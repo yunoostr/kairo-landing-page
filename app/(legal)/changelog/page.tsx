@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator"
 
 export const metadata = { title: "Changelog", alternates: { canonical: "/changelog" } }
 
-const REPO = "https://github.com/nathanrenard3/kairo-releases"
+const REPO = "https://github.com/yunoostr/kairo-releases"
 
 type Release = {
   id: number
@@ -16,13 +16,18 @@ type Release = {
 }
 
 // GitHub renders the markdown for us (`html+json`), so no markdown parser.
-// Anonymous quota is 60 req/h; the hourly cache keeps us far under it.
+// Fetched at build time; the daily deploy workflow keeps it fresh.
 async function getReleases(): Promise<Release[] | null> {
   const res = await fetch(
-    `https://api.github.com/repos/nathanrenard3/kairo-releases/releases?per_page=50`,
+    `https://api.github.com/repos/yunoostr/kairo-releases/releases?per_page=50`,
     {
-      headers: { Accept: "application/vnd.github.html+json" },
-      next: { revalidate: 3600 },
+      headers: {
+        Accept: "application/vnd.github.html+json",
+        // Set in CI: runners share IPs, so the anonymous quota is often gone.
+        ...(process.env.GITHUB_TOKEN && {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        }),
+      },
     }
   )
   if (!res.ok) return null

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
 
 // Stable URLs, always the latest release. GitHub redirects to the asset.
 const RELEASES =
-  "https://github.com/nathanrenard3/kairo-releases/releases/latest/download"
+  "https://github.com/yunoostr/kairo-releases/releases/latest/download"
 const BUILDS = [
   { l: "Apple Silicon", sub: "M1 and later", file: "Kairo_aarch64.dmg" },
   { l: "Intel", sub: "Macs before 2020", file: "Kairo_x64.dmg" },
